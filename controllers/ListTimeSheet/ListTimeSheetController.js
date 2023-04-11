@@ -30,7 +30,6 @@ export const getListTimeSheet = async (req, res) => {
     console.log(error);
   }
 };
-<<<<<<< HEAD
 export const getDataCustomerTime = async (req, res) => {
   try {
     const result = await dbSim.query(
@@ -60,5 +59,3 @@ export const getDataCustomerTime = async (req, res) => {
 };
 
 
-=======
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d

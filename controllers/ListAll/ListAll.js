@@ -12,8 +12,9 @@ export const getDataOPRV = async (req, res) => {
         `,
       {
         type: dbSim.QueryTypes.SELECT,
-        replacements: { 
-          province_name: `%${req.query.province_name}%` },
+        replacements: {
+          province_name: `%${req.query.province_name}%`,
+        },
       }
     );
     res.status(200).json({ msg: "Success", data: result });
@@ -31,24 +32,16 @@ export const getDataOCTY = async (req, res) => {
       *
       FROM 
           sim.OCTY 
-<<<<<<< HEAD
             where city_name LIKE :city_name 
             and id_oprv = :id_oprv
         `,
       {
         type: dbSim.QueryTypes.SELECT,
 
-          replacements: { 
-            id_oprv: req.query.id_oprv,
-            city_name: `%${req.query.city_name}%` },
-=======
-            where city_name LIKE :city_name
-        `,
-      {
-        type: dbSim.QueryTypes.SELECT,
-        replacements: { 
-          city_name: `%${req.query.city_name}%` },
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
+        replacements: {
+          id_oprv: req.query.id_oprv,
+          city_name: `%${req.query.city_name}%`,
+        },
       }
     );
     res.status(200).json({ msg: "Success", data: result });
@@ -70,8 +63,9 @@ export const getDataOSDT = async (req, res) => {
         `,
       {
         type: dbSim.QueryTypes.SELECT,
-        replacements: { 
-          sub_district_name: `%${req.query.sub_district_name}%` },
+        replacements: {
+          sub_district_name: `%${req.query.sub_district_name}%`,
+        },
       }
     );
     res.status(200).json({ msg: "Success", data: result });
@@ -93,8 +87,9 @@ export const getDataOVIL = async (req, res) => {
         `,
       {
         type: dbSim.QueryTypes.SELECT,
-        replacements: { 
-          village_name: `%${req.query.village_name}%` },
+        replacements: {
+          village_name: `%${req.query.village_name}%`,
+        },
       }
     );
     res.status(200).json({ msg: "Success", data: result });
@@ -112,16 +107,13 @@ export const getDataOARA = async (req, res) => {
       *
       FROM 
           sim.OARA 
-<<<<<<< HEAD
-       
-=======
           where sales_code LIKE :sales_code
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
         `,
       {
         type: dbSim.QueryTypes.SELECT,
-        replacements: { 
-          sales_code: `%${req.query.sales_code}%` },
+        replacements: {
+          sales_code: `%${req.query.sales_code}%`,
+        },
       }
     );
     res.status(200).json({ msg: "Success", data: result });
@@ -130,4 +122,3 @@ export const getDataOARA = async (req, res) => {
     console.log(error);
   }
 };
-

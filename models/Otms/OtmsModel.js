@@ -15,11 +15,7 @@ const OTMS = dbSim.define(
     },
     document_datetime: {
       type: DataTypes.DATE,
-<<<<<<< HEAD
       defaultValue: DataTypes.NOW,
-=======
-      defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
     },
     employee_id: {
       type: DataTypes.STRING,
@@ -39,12 +35,9 @@ const OTMS = dbSim.define(
     remarks: {
       type: DataTypes.STRING,
     },
-<<<<<<< HEAD
     identifier: {
       type: DataTypes.STRING,
     },
-=======
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
     is_active: {
       type: DataTypes.STRING(1),
       defaultValue: "1",

@@ -35,10 +35,6 @@ export const getDataCheck = async (req, res) => {
                   AND employee_id = T0.employee_id 
                   AND id_ocst = T0.id_ocst 
                   AND type_check = 'CHECKIN' 
-<<<<<<< HEAD
-                  GROUP BY id_ocek DESC LIMIT 0,1
-=======
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
                   ),
                 "" 
               )) AS document_date,
@@ -68,10 +64,6 @@ export const getDataCheck = async (req, res) => {
                   AND employee_id = T0.employee_id 
                   AND id_ocst = T0.id_ocst 
                   AND type_check = 'CHECKOUT' 
-<<<<<<< HEAD
-                  GROUP BY id_ocek DESC LIMIT 0,1
-=======
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
                   ),
                 "" 
               )) AS checkout_date,
@@ -87,11 +79,8 @@ export const getDataCheck = async (req, res) => {
             AND T0.type_check = 'CHECKIN' 
           GROUP BY
             T0.id_ocst
-<<<<<<< HEAD
           ORDER BY
-            T0.document_date ASC
-=======
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
+            T0.document_date ASC 
         `,
       {
         type: dbSim.QueryTypes.SELECT,

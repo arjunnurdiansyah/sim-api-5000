@@ -26,7 +26,6 @@ export const getDataCustomer = async (req, res) => {
 
 export const getDataParentCustomer = async (req, res) => {
   try {
-<<<<<<< HEAD
     if (req.query.from_checkin == "false") {
       const result = await dbSim.query(
         `CALL sales_order_request_customer_name_sales_visit(:id_karyawan, :customer_name, "0")`,
@@ -52,19 +51,6 @@ export const getDataParentCustomer = async (req, res) => {
       );
       res.status(200).json({ msg: "Success", data: result });
     }
-=======
-    const result = await dbSim.query(
-      `CALL sales_order_request_customer_name_sales_visit(:id_karyawan, :customer_name, "0")`,
-      {
-        type: dbSim.QueryTypes.EXEC,
-        replacements: {
-          id_karyawan: req.query.id_karyawan,
-          customer_name: req.query.customer_name,
-        },
-      }
-    );
-    res.status(200).json({ msg: "Success", data: result });
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
   } catch (error) {
     res.status(404).json({ msg: "Data Not Found! " });
     console.log(error);

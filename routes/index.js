@@ -70,17 +70,14 @@ import { postingSalesVisit } from "../controllers/SalesVisit/PostingSalesVisitCo
 
 import { getNationalSalesRevenue } from "../controllers/Sales/SalesRevenueDashboardController.js";
 
-import {
-<<<<<<< HEAD
-  getListTimeSheet,
-  getDataCustomerTime,
-} from "../controllers/ListTimeSheet/ListTimeSheetController.js";
+// import {
+//   getListTimeSheet,
+//   getDataCustomerTime,
+// } from "../controllers/ListTimeSheet/ListTimeSheetController.js";
 
 import { insertHeaderTimeSheet } from "../controllers/ListTimeSheet/InsertTimeSheetController.js";
 
 import {
-=======
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
   insertHeaderCheckIn,
   insertAttachmentCheckIn,
 } from "../controllers/CheckIn/CheckInController.js";
@@ -97,17 +94,18 @@ import {
   getDataOVIL,
   getDataOARA,
 } from "../controllers/ListAll/ListAll.js";
-<<<<<<< HEAD
+
+// import { insertDataProspectiveCustomer } from "../controllers/ProspectiveCustomer/ProspectiveCustomerController.js";
+
+import {
+  getListTimeSheet,
+  getDataCustomerTime,
+} from "../controllers/ListTimeSheet/ListTimeSheetController.js";
+
+// import { insertDataTimeSheet } from "../controllers/ListTimeSheet/InsertTimeSheetController.js";
+
 import { insertDataProspectiveCustomer } from "../controllers/ProspectiveCustomer/ProspectiveCustomerController.js";
-=======
 
-import { getListTimeSheet } from "../controllers/ListTimeSheet/ListTimeSheetController.js";
-
-import { insertDataTimeSheet } from "../controllers/ListTimeSheet/InsertTimeSheetController.js";
-
-import { insertDataProspectiveCustomer } from "../controllers/ProspectiveCustomer/ProspectiveCustomerController.js";
-
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
 import {
   insertHeaderMaterialPromotion,
   insertDetailMaterialPromotion,
@@ -170,7 +168,6 @@ router.get("/customer", getDataCustomer);
 router.get("/customer/parent", getDataParentCustomer);
 router.get("/customer/child", getDataChildCustomer);
 router.get("/customer/sales-order-history", getDataCustomerSO);
-<<<<<<< HEAD
 
 // SALES VISIT
 router.get("/sales-visit/last-checkin", getDataLastCheckIn);
@@ -194,8 +191,6 @@ router.post("/sales-visit/pay-receipt/header", insertHeaderPaymentReceipt);
 router.post("/sales-visit/pay-receipt/detail", insertDetailPaymentReceipt);
 router.get("/sales-visit/pay-receipt/header", getHeaderPaymentReceipt);
 router.get("/sales-visit/pay-receipt/detail", getDetailPaymentReceipt);
-=======
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
 
 // SALES VISIT
 router.get("/sales-visit/last-checkin", getDataLastCheckIn);
@@ -302,15 +297,10 @@ router.get("/checkin/customer", getDataCheck);
 router.post("/checkin/visit-list/do-add-edit", updateIsEditChekcIn);
 
 // Menu Time Sheet
-<<<<<<< HEAD
 router.post("/timesheet/header", insertHeaderTimeSheet);
 router.get("/timesheet/customer", getListTimeSheet);
 router.get("/timesheet/customertime", getDataCustomerTime);
-=======
-router.post("/timesheet", insertDataTimeSheet);
-router.get("/timesheet/customer", getListTimeSheet);
 
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
 // Menu Prospective Customer
 router.post("/prospectivecustomer", insertDataProspectiveCustomer);
 router.get("/getAll/province", getDataOPRV);
