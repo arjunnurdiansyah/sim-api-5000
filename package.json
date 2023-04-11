@@ -1,0 +1,30 @@
+{
+  "name": "sim-api-public",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "cross-blob": "^3.0.2",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "fs-extra": "^11.1.1",
+    "jsonwebtoken": "^9.0.0",
+    "jspdf": "^2.5.1",
+    "md5": "^2.3.0",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^2.3.2",
+    "pdfkit": "^0.13.0",
+    "sequelize": "^6.8.0",
+    "sharp": "^0.31.3",
+    "sharp-multer": "^0.2.5"
+  }
+}
