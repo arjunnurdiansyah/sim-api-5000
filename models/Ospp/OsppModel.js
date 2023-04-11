@@ -23,12 +23,6 @@ const OSPP = dbSim.define(
     id_ocst: {
       type: DataTypes.STRING(50),
     },
-<<<<<<< HEAD
-=======
-    remarks: {
-      type: DataTypes.STRING(255),
-    },
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
     file_name: {
       type: DataTypes.STRING,
     },
@@ -78,10 +72,6 @@ const SPP1 = dbSim.define(
   }
 );
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
 const SPP2 = dbSim.define(
   "SPP2",
   {
@@ -116,10 +106,6 @@ const SPP2 = dbSim.define(
     freezeTableName: true,
     timestamps: false,
   }
-<<<<<<< HEAD
 );
-=======
-  );
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
 
 export { OSPP, SPP1, SPP2 };

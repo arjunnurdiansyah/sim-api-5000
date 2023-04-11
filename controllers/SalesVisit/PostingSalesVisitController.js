@@ -75,14 +75,10 @@ export const postingSalesVisit = async (req, res) => {
       ) AS count_payment_fix,
       (
         IF((SELECT count_so + count_payment + count_payment_fix) >= 2, 'TRUE', 'FALSE')
-<<<<<<< HEAD
       ) AS do_posting,
       (
         IF((SELECT count_so) > 0, 'TRUE', 'FALSE')
       ) AS do_posting_join_visit
-=======
-      ) AS do_posting
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
       `,
       {
         type: dbSim.QueryTypes.SELECT,
@@ -92,14 +88,10 @@ export const postingSalesVisit = async (req, res) => {
       }
     );
 
-<<<<<<< HEAD
     if (
       checkBeforePosting[0].do_posting == "TRUE" ||
       checkBeforePosting[0].do_posting_join_visit == "TRUE"
     ) {
-=======
-    if (checkBeforePosting[0].do_posting == "TRUE") {
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
       await OSVT.destroy({
         where: {
           identifier: req.body.identifier,
@@ -162,7 +154,6 @@ export const postingSalesVisit = async (req, res) => {
       }
       res.status(200).json({ msg: "Success", data: [tableOSVT] });
     } else {
-<<<<<<< HEAD
       if (req.body.is_join_visit == "0") {
         res.status(200).json({
           msg: "Failed",
@@ -176,12 +167,6 @@ export const postingSalesVisit = async (req, res) => {
           data: [{ msg: "Please Submit Check Item!" }],
         });
       }
-=======
-      res.status(200).json({
-        msg: "Failed",
-        data: [{ msg: "Please Submit Sales Order Reques & Payment Receipt!" }],
-      });
->>>>>>> 1076ddffb92c6c204f6e2adea0d2e4c0f599d51d
     }
   } catch (err) {
     res.status(500).json({ msg: err });

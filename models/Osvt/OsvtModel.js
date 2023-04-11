@@ -34,6 +34,9 @@ const OSVT = dbSim.define(
     id_ousr: {
       type: DataTypes.STRING,
     },
+    is_join_visit: {
+      type: DataTypes.STRING,
+    },
   },
   {
     freezeTableName: true,
