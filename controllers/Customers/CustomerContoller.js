@@ -138,6 +138,7 @@ export const getDataCustomerSO = async (req, res) => {
         WHERE 
             T0.parent_code = :parent_code
             AND T0.child_code = :child_code
+            AND T1.id_oitg IN (21, 23)
         GROUP BY
             T0.id_oitm
         ORDER BY

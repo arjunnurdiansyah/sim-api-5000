@@ -262,7 +262,7 @@ export const generatePrintPaymentReceipt = async (req, res) => {
   try {
     const h = await dbSim.query(
       `
-        CALL sales_payment_receipt_get_header_obpp(:id_obpp, :source)
+        CALL sales_payment_receipt_get_header_obpp_copy1(:id_obpp, :source)
       `,
       {
         type: dbSim.QueryTypes.EXEC,
@@ -274,7 +274,7 @@ export const generatePrintPaymentReceipt = async (req, res) => {
     );
     const d = await dbSim.query(
       `
-        CALL sales_payment_receipt_get_detail_obpp(:id_obpp, :source)
+        CALL sales_payment_receipt_get_detail_obpp_copy1(:id_obpp, :source)
       `,
       {
         type: dbSim.QueryTypes.EXEC,
@@ -663,7 +663,7 @@ export const getDataBPPCode = async (req, res) => {
     const countObpp = await dbSim.query(
       `
         SELECT IFNULL(MAX(bpp_code)+1,1) AS number, DATE_FORMAT(NOW(),'%y') AS year, DATE_FORMAT(NOW(),'%m') AS month
-        FROM ${s}.OBPP
+        FROM ${s}.OBPP_copy1
         WHERE bpp_code LIKE '%BPP%'
         AND document_date LIKE CONCAT('%', DATE_FORMAT(NOW(),'%Y'), '%')
       `,
@@ -674,7 +674,7 @@ export const getDataBPPCode = async (req, res) => {
     const countPrs1 = await dbSim.query(
       `
         SELECT IFNULL(MAX(bpp_code)+1,1) AS number, DATE_FORMAT(NOW(),'%y') AS year, DATE_FORMAT(NOW(),'%m') AS month
-        FROM ${s}.PRS1
+        FROM ${s}.PRS1_copy1
         WHERE bpp_code LIKE '%BPP%'
         AND payment_date LIKE CONCAT('%', DATE_FORMAT(NOW(),'%Y'), '%')
       `,

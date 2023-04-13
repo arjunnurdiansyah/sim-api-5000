@@ -1,6 +1,10 @@
 import dbSim from "../../config/db_sim.js";
 import { TOSOR, TSOR1, TSOR3 } from "../../models/Tosor/TosorModel.js";
 import uploadFileMiddleware from "../../middleware/SalesVisit/SalesVisitMiddleware.js";
+import { OSMP, SMP1, SMP2 } from "../../models/Osmp/OsmpModel.js";
+import { OSFB, SFB1, SFB2 } from "../../models/Osfb/OsfbModel.js";
+import { OSCD, SCD1, SCD2 } from "../../models/Oscd/OscdModel.js";
+import { OSPP, SPP1, SPP2 } from "../../models/Ospp/OsppModel.js";
 
 // Param = id_ousr
 export const getDataLastCheckIn = async (req, res) => {
@@ -104,6 +108,70 @@ export const insertHeaderSORequest = async (req, res) => {
     //     "approval_blocking_ousr" : "22",
     //     "identifier" : "asdasdas"
     // }
+
+    await OSMP.destroy({
+      where: {
+        identifier: req.body.identifier,
+      },
+    });
+    await SMP1.destroy({
+      where: {
+        identifier: req.body.identifier,
+      },
+    });
+    await SMP2.destroy({
+      where: {
+        identifier: req.body.identifier,
+      },
+    });
+
+    await OSFB.destroy({
+      where: {
+        identifier: req.body.identifier,
+      },
+    });
+    await SFB1.destroy({
+      where: {
+        identifier: req.body.identifier,
+      },
+    });
+    await SFB2.destroy({
+      where: {
+        identifier: req.body.identifier,
+      },
+    });
+
+    await OSCD.destroy({
+      where: {
+        identifier: req.body.identifier,
+      },
+    });
+    await SCD1.destroy({
+      where: {
+        identifier: req.body.identifier,
+      },
+    });
+    await SCD2.destroy({
+      where: {
+        identifier: req.body.identifier,
+      },
+    });
+
+    await OSPP.destroy({
+      where: {
+        identifier: req.body.identifier,
+      },
+    });
+    await SPP1.destroy({
+      where: {
+        identifier: req.body.identifier,
+      },
+    });
+    await SPP2.destroy({
+      where: {
+        identifier: req.body.identifier,
+      },
+    });
 
     await TOSOR.destroy({
       where: {
