@@ -9,45 +9,52 @@ export const insertHeaderMaterialPromotion = async (req, res) => {
         where: {
           identifier: req.body.identifier,
         },
-      });
-
-      await SMP1.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-
-      await SMP2.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-
-      await OSMP.create(req.body);
-      const tableOSMP = await OSMP.findOne({
-        attributes: ["id_osmp"],
-        where: { identifier: req.body.identifier },
-      });
-      res.status(200).json({ msg: "Success", data: tableOSMP });
+      }).then(
+        async () =>
+          await SMP1.destroy({
+            where: {
+              identifier: req.body.identifier,
+            },
+          }).then(
+            async () =>
+              await SMP2.destroy({
+                where: {
+                  identifier: req.body.identifier,
+                },
+              }).then(
+                async () =>
+                  await OSMP.create(req.body).then(async () => {
+                    const tableOSMP = await OSMP.findOne({
+                      attributes: ["id_osmp"],
+                      where: { identifier: req.body.identifier },
+                    });
+                    res.status(200).json({ msg: "Success", data: tableOSMP });
+                  })
+              )
+          )
+      );
     } else {
       await OSMP.destroy({
         where: {
           identifier: req.body.identifier,
         },
-      });
-
-      await SMP1.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-
-      await SMP2.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-      res.status(200).json({ msg: "Success", data: [] });
+      }).then(
+        async () =>
+          await SMP1.destroy({
+            where: {
+              identifier: req.body.identifier,
+            },
+          }).then(
+            async () =>
+              await SMP2.destroy({
+                where: {
+                  identifier: req.body.identifier,
+                },
+              }).then(async () => {
+                res.status(200).json({ msg: "Success", data: [] });
+              })
+          )
+      );
     }
   } catch (err) {
     if (err.code == "LIMIT_FILE_SIZE") {

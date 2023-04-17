@@ -9,45 +9,52 @@ export const insertHeaderCustomerFeedBack = async (req, res) => {
         where: {
           identifier: req.body.identifier,
         },
-      });
-
-      await SFB1.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-
-      await SFB2.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-
-      await OSFB.create(req.body);
-      const tableOSFB = await OSFB.findOne({
-        attributes: ["id_osfb"],
-        where: { identifier: req.body.identifier },
-      });
-      res.status(200).json({ msg: "Success", data: tableOSFB });
+      }).then(
+        async () =>
+          await SFB1.destroy({
+            where: {
+              identifier: req.body.identifier,
+            },
+          }).then(
+            async () =>
+              await SFB2.destroy({
+                where: {
+                  identifier: req.body.identifier,
+                },
+              }).then(
+                async () =>
+                  await OSFB.create(req.body).then(async () => {
+                    const tableOSFB = await OSFB.findOne({
+                      attributes: ["id_osfb"],
+                      where: { identifier: req.body.identifier },
+                    });
+                    res.status(200).json({ msg: "Success", data: tableOSFB });
+                  })
+              )
+          )
+      );
     } else {
       await OSFB.destroy({
         where: {
           identifier: req.body.identifier,
         },
-      });
-
-      await SFB1.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-
-      await SFB2.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-      res.status(200).json({ msg: "Success", data: [] });
+      }).then(
+        async () =>
+          await SFB1.destroy({
+            where: {
+              identifier: req.body.identifier,
+            },
+          }).then(
+            async () =>
+              await SFB2.destroy({
+                where: {
+                  identifier: req.body.identifier,
+                },
+              }).then(async () => {
+                res.status(200).json({ msg: "Success", data: [] });
+              })
+          )
+      );
     }
   } catch (err) {
     if (err.code == "LIMIT_FILE_SIZE") {

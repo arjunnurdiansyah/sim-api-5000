@@ -79,7 +79,8 @@ export const getDataCheck = async (req, res) => {
               T0.is_edit,
               T0.id_ocek,
               T0.identifier,
-              IF(LEFT(T0.document_date,10) = DATE_FORMAT(NOW(),'%Y-%m-%d') AND T0.matching_id <> 'TOSOR', 'TRUE', 'FALSE') AS show_button,
+              IF(LEFT(T0.document_date,10) = DATE_FORMAT(NOW(),'%Y-%m-%d') AND T0.matching_id <> 'TOSOR', 'TRUE', 'FALSE') AS show_button_old,
+              IF(T0.matching_id <> 'TOSOR', 'TRUE', 'FALSE') AS show_button,
               T1.id_ogrp
           FROM
             sim.OCEK T0 

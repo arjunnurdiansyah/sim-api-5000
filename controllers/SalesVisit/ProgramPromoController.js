@@ -9,45 +9,52 @@ export const insertHeaderProgramPromo = async (req, res) => {
         where: {
           identifier: req.body.identifier,
         },
-      });
-
-      await SPP1.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-
-      await SPP2.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-
-      await OSPP.create(req.body);
-      const tableOSPP = await OSPP.findOne({
-        attributes: ["id_ospp"],
-        where: { identifier: req.body.identifier },
-      });
-      res.status(200).json({ msg: "Success", data: tableOSPP });
+      }).then(
+        async () =>
+          await SPP1.destroy({
+            where: {
+              identifier: req.body.identifier,
+            },
+          }).then(
+            async () =>
+              await SPP2.destroy({
+                where: {
+                  identifier: req.body.identifier,
+                },
+              }).then(
+                async () =>
+                  await OSPP.create(req.body).then(async () => {
+                    const tableOSPP = await OSPP.findOne({
+                      attributes: ["id_ospp"],
+                      where: { identifier: req.body.identifier },
+                    });
+                    res.status(200).json({ msg: "Success", data: tableOSPP });
+                  })
+              )
+          )
+      );
     } else {
       await OSPP.destroy({
         where: {
           identifier: req.body.identifier,
         },
-      });
-
-      await SPP1.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-
-      await SPP2.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-      res.status(200).json({ msg: "Success", data: [] });
+      }).then(
+        async () =>
+          await SPP1.destroy({
+            where: {
+              identifier: req.body.identifier,
+            },
+          }).then(
+            async () =>
+              await SPP2.destroy({
+                where: {
+                  identifier: req.body.identifier,
+                },
+              }).then(async () => {
+                res.status(200).json({ msg: "Success", data: [] });
+              })
+          )
+      );
     }
   } catch (err) {
     if (err.code == "LIMIT_FILE_SIZE") {

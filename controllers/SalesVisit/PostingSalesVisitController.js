@@ -52,6 +52,7 @@ export const postingSalesVisit = async (req, res) => {
     //   identifier
     //   fromcheckin
     // }
+
     const checkBeforePosting = await dbSim.query(
       `
       SELECT 

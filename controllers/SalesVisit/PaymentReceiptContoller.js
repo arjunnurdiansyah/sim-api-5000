@@ -719,35 +719,45 @@ export const insertHeaderPaymentReceipt = async (req, res) => {
         where: {
           identifier: req.body.identifier,
         },
-      });
-      await BPP1.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-      await OBPP.create(req.body);
-      const tableOBPP = await OBPP.findOne({
-        attributes: ["id_obpp"],
-        where: { bpp_code: req.body.bpp_code },
-      });
-      res.status(200).json({ msg: "Success", data: tableOBPP });
+      }).then(
+        async () =>
+          await BPP1.destroy({
+            where: {
+              identifier: req.body.identifier,
+            },
+          }).then(
+            async () =>
+              await OBPP.create(req.body).then(async () => {
+                const tableOBPP = await OBPP.findOne({
+                  attributes: ["id_obpp"],
+                  where: { bpp_code: req.body.bpp_code },
+                });
+                res.status(200).json({ msg: "Success", data: tableOBPP });
+              })
+          )
+      );
     } else {
       await OBPP_F.destroy({
         where: {
           identifier: req.body.identifier,
         },
-      });
-      await BPP1_F.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-      await OBPP_F.create(req.body);
-      const tableOBPP_F = await OBPP_F.findOne({
-        attributes: ["id_obpp"],
-        where: { bpp_code: req.body.bpp_code },
-      });
-      res.status(200).json({ msg: "Success", data: tableOBPP_F });
+      }).then(
+        async () =>
+          await BPP1_F.destroy({
+            where: {
+              identifier: req.body.identifier,
+            },
+          }).then(
+            async () =>
+              await OBPP_F.create(req.body).then(async () => {
+                const tableOBPP_F = await OBPP_F.findOne({
+                  attributes: ["id_obpp"],
+                  where: { bpp_code: req.body.bpp_code },
+                });
+                res.status(200).json({ msg: "Success", data: tableOBPP_F });
+              })
+          )
+      );
     }
   } catch (err) {
     res.status(500).json({ msg: err });

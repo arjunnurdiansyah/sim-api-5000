@@ -1,10 +1,6 @@
 import dbSim from "../../config/db_sim.js";
 import { TOSOR, TSOR1, TSOR3 } from "../../models/Tosor/TosorModel.js";
 import uploadFileMiddleware from "../../middleware/SalesVisit/SalesVisitMiddleware.js";
-import { OSMP, SMP1, SMP2 } from "../../models/Osmp/OsmpModel.js";
-import { OSFB, SFB1, SFB2 } from "../../models/Osfb/OsfbModel.js";
-import { OSCD, SCD1, SCD2 } from "../../models/Oscd/OscdModel.js";
-import { OSPP, SPP1, SPP2 } from "../../models/Ospp/OsppModel.js";
 
 // Param = id_ousr
 export const getDataLastCheckIn = async (req, res) => {
@@ -109,93 +105,38 @@ export const insertHeaderSORequest = async (req, res) => {
     //     "identifier" : "asdasdas"
     // }
 
-    // await OSMP.destroy({
-    //   where: {
-    //     identifier: req.body.identifier,
-    //   },
-    // });
-    // await SMP1.destroy({
-    //   where: {
-    //     identifier: req.body.identifier,
-    //   },
-    // });
-    // await SMP2.destroy({
-    //   where: {
-    //     identifier: req.body.identifier,
-    //   },
-    // });
-
-    // await OSFB.destroy({
-    //   where: {
-    //     identifier: req.body.identifier,
-    //   },
-    // });
-    // await SFB1.destroy({
-    //   where: {
-    //     identifier: req.body.identifier,
-    //   },
-    // });
-    // await SFB2.destroy({
-    //   where: {
-    //     identifier: req.body.identifier,
-    //   },
-    // });
-
-    // await OSCD.destroy({
-    //   where: {
-    //     identifier: req.body.identifier,
-    //   },
-    // });
-    // await SCD1.destroy({
-    //   where: {
-    //     identifier: req.body.identifier,
-    //   },
-    // });
-    // await SCD2.destroy({
-    //   where: {
-    //     identifier: req.body.identifier,
-    //   },
-    // });
-
-    // await OSPP.destroy({
-    //   where: {
-    //     identifier: req.body.identifier,
-    //   },
-    // });
-    // await SPP1.destroy({
-    //   where: {
-    //     identifier: req.body.identifier,
-    //   },
-    // });
-    // await SPP2.destroy({
-    //   where: {
-    //     identifier: req.body.identifier,
-    //   },
-    // });
-
     await TOSOR.destroy({
       where: {
         identifier: req.body.identifier,
       },
-    });
-    await TSOR1.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
-    await TSOR3.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
-    await TOSOR.create(req.body);
-    const tableTOSOR = await TOSOR.findOne({
-      attributes: ["id_tosor"],
-      where: { ref_no: req.body.ref_no, identifier: req.body.identifier },
-      order: [["id_tosor", "DESC"]],
-    });
-
-    res.status(200).json({ msg: "Success", data: tableTOSOR });
+    }).then(
+      async () =>
+        await TSOR1.destroy({
+          where: {
+            identifier: req.body.identifier,
+          },
+        }).then(
+          async () =>
+            await TSOR3.destroy({
+              where: {
+                identifier: req.body.identifier,
+              },
+            }).then(
+              async () =>
+                await TOSOR.create(req.body).then(async () => {
+                  const tableTOSOR = await TOSOR.findOne({
+                    attributes: ["id_tosor"],
+                    where: {
+                      ref_no: req.body.ref_no,
+                      identifier: req.body.identifier,
+                    },
+                    order: [["id_tosor", "DESC"]],
+                  });
+                  res.status(200).json({ msg: "Success", data: tableTOSOR });
+                })
+            )
+        )
+    );
   } catch (err) {
     res.status(500).json({ msg: err });
     console.log(err);

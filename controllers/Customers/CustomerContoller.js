@@ -136,8 +136,7 @@ export const getDataCustomerSO = async (req, res) => {
             sim2.VODOR T0
             LEFT JOIN sim.OITM T1 ON T0.id_oitm = T1.id_oitm
         WHERE 
-            T0.parent_code = :parent_code
-            AND T0.child_code = :child_code
+            T0.child_code = :child_code
             AND T1.id_oitg IN (21, 23)
         GROUP BY
             T0.id_oitm
@@ -147,7 +146,7 @@ export const getDataCustomerSO = async (req, res) => {
       {
         type: dbSim.QueryTypes.SELECT,
         replacements: {
-          parent_code: req.query.parent_code,
+          // parent_code: req.query.parent_code,
           child_code: req.query.child_code,
         },
       }

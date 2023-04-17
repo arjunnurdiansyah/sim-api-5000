@@ -9,46 +9,52 @@ export const insertHeaderCompetitorData = async (req, res) => {
         where: {
           identifier: req.body.identifier,
         },
-      });
-
-      await SCD1.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-
-      await SCD2.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-
-      await OSCD.create(req.body);
-      const tableOSCD = await OSCD.findOne({
-        attributes: ["id_oscd"],
-        where: { identifier: req.body.identifier },
-      });
-      res.status(200).json({ msg: "Success", data: tableOSCD });
+      }).then(
+        async () =>
+          await SCD1.destroy({
+            where: {
+              identifier: req.body.identifier,
+            },
+          }).then(
+            async () =>
+              await SCD2.destroy({
+                where: {
+                  identifier: req.body.identifier,
+                },
+              }).then(
+                async () =>
+                  await OSCD.create(req.body).then(async () => {
+                    const tableOSCD = await OSCD.findOne({
+                      attributes: ["id_oscd"],
+                      where: { identifier: req.body.identifier },
+                    });
+                    res.status(200).json({ msg: "Success", data: tableOSCD });
+                  })
+              )
+          )
+      );
     } else {
       await OSCD.destroy({
         where: {
           identifier: req.body.identifier,
         },
-      });
-
-      await SCD1.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-
-      await SCD2.destroy({
-        where: {
-          identifier: req.body.identifier,
-        },
-      });
-
-      res.status(200).json({ msg: "Success", data: [] });
+      }).then(
+        async () =>
+          await SCD1.destroy({
+            where: {
+              identifier: req.body.identifier,
+            },
+          }).then(
+            async () =>
+              await SCD2.destroy({
+                where: {
+                  identifier: req.body.identifier,
+                },
+              }).then(async () => {
+                res.status(200).json({ msg: "Success", data: [] });
+              })
+          )
+      );
     }
   } catch (err) {
     if (err.code == "LIMIT_FILE_SIZE") {
