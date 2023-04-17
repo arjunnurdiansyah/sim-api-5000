@@ -80,6 +80,10 @@ import { insertHeaderTimeSheet } from "../controllers/ListTimeSheet/InsertTimeSh
 import {
   insertHeaderCheckIn,
   insertAttachmentCheckIn,
+  getDataCustomerOffsiteMeeting,
+  getDataCustomerSalesVisit,
+  getDataCustomerProspective,
+  getCustomerByArea
 } from "../controllers/CheckIn/CheckInController.js";
 
 import { getDataAtt } from "../controllers/ListAtt/ListAttController.js";
@@ -135,6 +139,16 @@ import {
   insertAttachmentProgramPromo,
   getDataDraftProgramPromo,
 } from "../controllers/SalesVisit/ProgramPromoController.js";
+
+
+import {
+  insertHeaderOffsiteMeeting,
+  insertDetailOffsiteMeeting,
+  insertAttachmentOffsiteMeeting,
+  getDataDraftOffsiteMeeting,
+} from "../controllers/OffsiteMeeting/OffsiteMeetingController.js";
+
+
 
 const router = express.Router();
 
@@ -308,5 +322,20 @@ router.get("/getAll/city", getDataOCTY);
 router.get("/getAll/sub", getDataOSDT);
 router.get("/getAll/village", getDataOVIL);
 router.get("/getAll/area", getDataOARA);
+
+// Offside Meeting
+router.post("/offside/header", insertHeaderOffsiteMeeting);
+router.post("/offside/detail", insertDetailOffsiteMeeting);
+router.post("/offside/attachment", insertAttachmentOffsiteMeeting);
+router.get("/offside/getold", getDataDraftOffsiteMeeting);
+
+// GetCustomer 
+router.get("/checkin/offside-meeting", getDataCustomerOffsiteMeeting);
+router.get("/checkin/sales-visit", getDataCustomerSalesVisit);
+router.get("/checkin/prospective-customer", getDataCustomerProspective);
+router.get("/checkin/getCustomerByArea", getCustomerByArea);
+
+
+
 
 export default router;

@@ -4,30 +4,51 @@ import uploadFileMiddleware from "../../middleware/CustomerFeedbackMiddleware/Cu
 
 export const insertHeaderCustomerFeedBack = async (req, res) => {
   try {
-    await OSFB.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
+    if (req.body.do_insert == "TRUE") {
+      await OSFB.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
 
-    await SFB1.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
+      await SFB1.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
 
-    await SFB2.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
+      await SFB2.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
 
-    await OSFB.create(req.body);
-    const tableOSFB = await OSFB.findOne({
-      attributes: ["id_osfb"],
-      where: { identifier: req.body.identifier },
-    });
-    res.status(200).json({ msg: "Success", data: tableOSFB });
+      await OSFB.create(req.body);
+      const tableOSFB = await OSFB.findOne({
+        attributes: ["id_osfb"],
+        where: { identifier: req.body.identifier },
+      });
+      res.status(200).json({ msg: "Success", data: tableOSFB });
+    } else {
+      await OSFB.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
+
+      await SFB1.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
+
+      await SFB2.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
+      res.status(200).json({ msg: "Success", data: [] });
+    }
   } catch (err) {
     if (err.code == "LIMIT_FILE_SIZE") {
       return res.status(500).json({

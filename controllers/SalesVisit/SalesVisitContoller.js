@@ -109,69 +109,69 @@ export const insertHeaderSORequest = async (req, res) => {
     //     "identifier" : "asdasdas"
     // }
 
-    await OSMP.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
-    await SMP1.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
-    await SMP2.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
+    // await OSMP.destroy({
+    //   where: {
+    //     identifier: req.body.identifier,
+    //   },
+    // });
+    // await SMP1.destroy({
+    //   where: {
+    //     identifier: req.body.identifier,
+    //   },
+    // });
+    // await SMP2.destroy({
+    //   where: {
+    //     identifier: req.body.identifier,
+    //   },
+    // });
 
-    await OSFB.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
-    await SFB1.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
-    await SFB2.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
+    // await OSFB.destroy({
+    //   where: {
+    //     identifier: req.body.identifier,
+    //   },
+    // });
+    // await SFB1.destroy({
+    //   where: {
+    //     identifier: req.body.identifier,
+    //   },
+    // });
+    // await SFB2.destroy({
+    //   where: {
+    //     identifier: req.body.identifier,
+    //   },
+    // });
 
-    await OSCD.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
-    await SCD1.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
-    await SCD2.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
+    // await OSCD.destroy({
+    //   where: {
+    //     identifier: req.body.identifier,
+    //   },
+    // });
+    // await SCD1.destroy({
+    //   where: {
+    //     identifier: req.body.identifier,
+    //   },
+    // });
+    // await SCD2.destroy({
+    //   where: {
+    //     identifier: req.body.identifier,
+    //   },
+    // });
 
-    await OSPP.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
-    await SPP1.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
-    await SPP2.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
+    // await OSPP.destroy({
+    //   where: {
+    //     identifier: req.body.identifier,
+    //   },
+    // });
+    // await SPP1.destroy({
+    //   where: {
+    //     identifier: req.body.identifier,
+    //   },
+    // });
+    // await SPP2.destroy({
+    //   where: {
+    //     identifier: req.body.identifier,
+    //   },
+    // });
 
     await TOSOR.destroy({
       where: {
@@ -191,7 +191,8 @@ export const insertHeaderSORequest = async (req, res) => {
     await TOSOR.create(req.body);
     const tableTOSOR = await TOSOR.findOne({
       attributes: ["id_tosor"],
-      where: { ref_no: req.body.ref_no },
+      where: { ref_no: req.body.ref_no, identifier: req.body.identifier },
+      order: [["id_tosor", "DESC"]],
     });
 
     res.status(200).json({ msg: "Success", data: tableTOSOR });

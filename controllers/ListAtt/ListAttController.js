@@ -12,6 +12,7 @@ export const getDataAtt = async (req, res) => {
            employee_id = :employee_id
             AND is_active = '1'
             AND document_date LIKE :document_date
+            GROUP BY type_att ASC
         `,
       {
         type: dbSim.QueryTypes.SELECT,

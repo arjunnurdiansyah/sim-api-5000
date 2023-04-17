@@ -34,7 +34,10 @@ export const getDataCheck = async (req, res) => {
                   document_date LIKE :document_date 
                   AND employee_id = T0.employee_id 
                   AND id_ocst = T0.id_ocst 
-                  AND type_check = 'CHECKIN' 
+                  AND type_check = 'CHECKIN'
+                ORDER BY
+                  id_ocek DESC
+                LIMIT 1
                   ),
                 "" 
               )) AS document_date,
@@ -48,6 +51,9 @@ export const getDataCheck = async (req, res) => {
                 OPCT 
               WHERE
                 id_opct = T0.id_ocst 
+              ORDER BY
+                id_opct DESC
+              LIMIT 1
               ),
             ( SELECT customer_name FROM OCST WHERE id_ocst = T0.id_ocst )) AS customer_name,
           IF
@@ -63,16 +69,21 @@ export const getDataCheck = async (req, res) => {
                   document_date LIKE :document_date 
                   AND employee_id = T0.employee_id 
                   AND id_ocst = T0.id_ocst 
-                  AND type_check = 'CHECKOUT' 
+                  AND type_check = 'CHECKOUT'
+                ORDER BY
+                  id_ocek DESC
+                LIMIT 1 
                   ),
                 "" 
               )) AS checkout_date,
               T0.is_edit,
               T0.id_ocek,
               T0.identifier,
-              IF(LEFT(T0.document_date,10) = DATE_FORMAT(NOW(),'%Y-%m-%d'), 'TRUE', 'FALSE') AS show_button
+              IF(LEFT(T0.document_date,10) = DATE_FORMAT(NOW(),'%Y-%m-%d') AND T0.matching_id <> 'TOSOR', 'TRUE', 'FALSE') AS show_button,
+              T1.id_ogrp
           FROM
             sim.OCEK T0 
+            LEFT JOIN sim.OCST T1 ON T0.id_ocst = T1.id_ocst
           WHERE
             T0.document_date LIKE :document_date 
             AND T0.employee_id = :employee_id 

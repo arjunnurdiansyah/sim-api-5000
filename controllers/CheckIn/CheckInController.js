@@ -1,20 +1,21 @@
 import uploadFileMiddleware from "../../middleware/ChekIn/ChekInMiddleware.js";
 import fs from "fs";
 import { OCEK,CEK1 } from "../../models/Ocek/OcekModel.js";
-
+import dbSim from "../../config/db_sim.js";
+import dbSim2 from "../../config/db_sim2.js";
 export const insertHeaderCheckIn = async (req, res) => {
   try {
-    await OCEK.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
+    // await OCEK.destroy({
+    //   where: {
+    //     identifier: req.body.identifier,
+    //   },
+    // });
 
-    await CEK1.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
+    // await CEK1.destroy({
+    //   where: {
+    //     identifier: req.body.identifier,
+    //   },
+    // });
 
     await OCEK.create(req.body);
     const tableOCEK = await OCEK.findOne({
@@ -100,5 +101,123 @@ export const insertAttachmentCheckIn = async (req, res) => {
     res.status(500).json({
       msg: `Could not upload the file: ${req.file}. ${err}`,
     });
+  }
+
+
+};
+
+export const getDataCustomerOffsiteMeeting = async (req, res) => {
+  try {
+    const result = await dbSim.query(
+      `
+        SELECT 
+            T0.id_tosor , child_ocst AS customer_name
+        FROM 
+            sim2.TOSOR_copy 
+        WHERE 
+            child_ocst LIKE :customer_name
+       
+            GROUP BY child_ocst DESC
+        `,
+      {
+        type: dbSim.QueryTypes.SELECT,
+        replacements: { customer_name: `%${req.query.customer_name}%` },
+      }
+    );
+    res.status(200).json({ msg: "Success", data: result });
+  } catch (error) {
+    res.status(404).json({ msg: "Data Not Found! " });
+    console.log(error);
+  }
+};
+
+export const getDataCustomerSalesVisit = async (req, res) => {
+  try {
+    const result = await dbSim2.query(
+      `
+      SELECT 
+      T0.id_ocst,T1.customer_name
+      FROM 
+          sim.OSVT T0
+
+     
+          LEFT JOIN sim.OCST T1 ON T0.id_ocst = T1.id_ocst
+      WHERE 
+          customer_name LIKE :customer_name
+ 
+          GROUP BY customer_name DESC
+        `,
+      {
+        type: dbSim.QueryTypes.SELECT,
+        replacements: { customer_name: `%${req.query.customer_name}%` },
+      }
+    );
+    res.status(200).json({ msg: "Success", data: result });
+  } catch (error) {
+    res.status(404).json({ msg: "Data Not Found! " });
+    console.log(error);
+  }
+};
+
+
+export const getDataCustomerProspective = async (req, res) => {
+  try {
+    const result = await dbSim.query(
+      `
+      SELECT 
+      id_opct, customer_name 
+      FROM 
+          sim.OPCT 
+      WHERE 
+          customer_name LIKE :customer_name
+         
+          GROUP BY customer_name DESC
+        `,
+      {
+        type: dbSim.QueryTypes.SELECT,
+        replacements: { customer_name: `%${req.query.customer_name}%` },
+      }
+    );
+    res.status(200).json({ msg: "Success", data: result });
+  } catch (error) {
+    res.status(404).json({ msg: "Data Not Found! " });
+    console.log(error);
+  }
+};
+
+
+
+
+export const getCustomerByArea = async (req, res) => {
+  try {
+    const result = await dbSim.query(
+      `
+
+
+      SELECT 
+         id_ocst, customer_name  
+      FROM 
+         sim.OCST 
+      WHERE 
+         id_oara IN(
+          SELECT id_oara FROM sim.OARA 
+          WHERE sales_code = :employee_id
+         
+          AND is_active=1
+        )
+        AND customer_name LIKE :customer_name
+          `,
+      {
+        type: dbSim.QueryTypes.SELECT,
+        replacements: {
+          customer_name: `%${req.query.customer_name}%`,
+          employee_id: req.query.employee_id,
+        },
+      }
+    );
+    res.status(200).json({ msg: "Success", data: result });
+  } catch (error) {
+    res.status(404).json({ msg: "Data Not Found! " });
+    console.log(error);
   }
 };

@@ -4,30 +4,52 @@ import uploadFileMiddleware from "../../middleware/CompetitorData/CompetitorData
 
 export const insertHeaderCompetitorData = async (req, res) => {
   try {
-    await OSCD.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
+    if (req.body.do_insert == "TRUE") {
+      await OSCD.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
 
-    await SCD1.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
+      await SCD1.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
 
-    await SCD2.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
+      await SCD2.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
 
-    await OSCD.create(req.body);
-    const tableOSCD = await OSCD.findOne({
-      attributes: ["id_oscd"],
-      where: { identifier: req.body.identifier },
-    });
-    res.status(200).json({ msg: "Success", data: tableOSCD });
+      await OSCD.create(req.body);
+      const tableOSCD = await OSCD.findOne({
+        attributes: ["id_oscd"],
+        where: { identifier: req.body.identifier },
+      });
+      res.status(200).json({ msg: "Success", data: tableOSCD });
+    } else {
+      await OSCD.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
+
+      await SCD1.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
+
+      await SCD2.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
+
+      res.status(200).json({ msg: "Success", data: [] });
+    }
   } catch (err) {
     if (err.code == "LIMIT_FILE_SIZE") {
       return res.status(500).json({

@@ -4,30 +4,51 @@ import uploadFileMiddleware from "../../middleware/MaterialPromotionMiddleware/M
 
 export const insertHeaderMaterialPromotion = async (req, res) => {
   try {
-    await OSMP.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
+    if (req.body.do_insert == "TRUE") {
+      await OSMP.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
 
-    await SMP1.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
+      await SMP1.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
 
-    await SMP2.destroy({
-      where: {
-        identifier: req.body.identifier,
-      },
-    });
+      await SMP2.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
 
-    await OSMP.create(req.body);
-    const tableOSMP = await OSMP.findOne({
-      attributes: ["id_osmp"],
-      where: { identifier: req.body.identifier },
-    });
-    res.status(200).json({ msg: "Success", data: tableOSMP });
+      await OSMP.create(req.body);
+      const tableOSMP = await OSMP.findOne({
+        attributes: ["id_osmp"],
+        where: { identifier: req.body.identifier },
+      });
+      res.status(200).json({ msg: "Success", data: tableOSMP });
+    } else {
+      await OSMP.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
+
+      await SMP1.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
+
+      await SMP2.destroy({
+        where: {
+          identifier: req.body.identifier,
+        },
+      });
+      res.status(200).json({ msg: "Success", data: [] });
+    }
   } catch (err) {
     if (err.code == "LIMIT_FILE_SIZE") {
       return res.status(500).json({

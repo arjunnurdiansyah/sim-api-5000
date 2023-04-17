@@ -75,10 +75,12 @@ export const postingSalesVisit = async (req, res) => {
       ) AS count_payment_fix,
       (
         IF((SELECT count_so + count_payment + count_payment_fix) >= 2, 'TRUE', 'FALSE')
-      ) AS do_posting,
+      ) AS do_posting_old,
       (
         IF((SELECT count_so) > 0, 'TRUE', 'FALSE')
-      ) AS do_posting_join_visit
+      ) AS do_posting_join_visit_old,
+      'TRUE' AS do_posting,
+      'TRUE' AS do_posting_join_visit
       `,
       {
         type: dbSim.QueryTypes.SELECT,
@@ -158,7 +160,7 @@ export const postingSalesVisit = async (req, res) => {
         res.status(200).json({
           msg: "Failed",
           data: [
-            { msg: "Please Submit Sales Order Reques & Payment Receipt!" },
+            { msg: "Please Submit Sales Order Request & Payment Receipt!" },
           ],
         });
       } else {
