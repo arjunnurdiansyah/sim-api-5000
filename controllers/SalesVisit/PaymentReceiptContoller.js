@@ -313,7 +313,7 @@ export const generatePrintPaymentReceipt = async (req, res) => {
       }
     );
 
-    let tblTemp = `${totPaymentTerbilang[0].terbilang}Rupiah`,
+    let tblTemp = `${totPaymentTerbilang[0].terbilang} Rupiah`,
       tbl = tblTemp.split(" "),
       tbl1 = "",
       tbl2 = "",

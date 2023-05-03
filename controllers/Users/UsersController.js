@@ -68,9 +68,12 @@ export const Login = async (req, res) => {
 
 export const LoginWithUUID = async (req, res) => {
   try {
+    let source = req.body.user_name.search("IBM") == 0 ? "IBM" : "FIX",
+      userName =
+        source == "FIX" ? `IBM${req.body.user_name}` : req.body.user_name;
     const user = await Users.findAll({
       where: {
-        user_name: req.body.user_name,
+        user_name: userName,
       },
     });
 
@@ -165,6 +168,7 @@ export const LoginWithUUID = async (req, res) => {
       department_user: department_user,
       accessToken: accessToken,
       refreshToken: refreshToken,
+      source: source,
     };
     res.status(200).json({ msg: "Success", data: data });
     // res.status(200).json({ accessToken });

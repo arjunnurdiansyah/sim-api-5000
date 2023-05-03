@@ -1,6 +1,6 @@
 import uploadFileMiddleware from "../../middleware/ChekIn/ChekInMiddleware.js";
 import fs from "fs";
-import { OCEK,CEK1 } from "../../models/Ocek/OcekModel.js";
+import { OCEK, CEK1 } from "../../models/Ocek/OcekModel.js";
 import dbSim from "../../config/db_sim.js";
 import dbSim2 from "../../config/db_sim2.js";
 export const insertHeaderCheckIn = async (req, res) => {
@@ -36,10 +36,8 @@ export const insertHeaderCheckIn = async (req, res) => {
   }
 };
 
-
 export const getListFilesCheckIn = (req, res) => {
-  const directoryPath =
-    __basedir + "/resources/static/assets/uploads/chekin/";
+  const directoryPath = __basedir + "/resources/static/assets/uploads/chekin/";
 
   fs.readdir(directoryPath, function (err, files) {
     if (err) {
@@ -63,8 +61,7 @@ export const getListFilesCheckIn = (req, res) => {
 
 export const getListFilesCheckInByName = (req, res) => {
   const fileName = req.params.name;
-  const directoryPath =
-    __basedir + "/resources/static/assets/uploads/chekin/";
+  const directoryPath = __basedir + "/resources/static/assets/uploads/chekin/";
 
   res.download(directoryPath + fileName, fileName, (err) => {
     if (err) {
@@ -102,8 +99,6 @@ export const insertAttachmentCheckIn = async (req, res) => {
       msg: `Could not upload the file: ${req.file}. ${err}`,
     });
   }
-
-
 };
 
 export const getDataCustomerOffsiteMeeting = async (req, res) => {
@@ -135,17 +130,16 @@ export const getDataCustomerSalesVisit = async (req, res) => {
   try {
     const result = await dbSim2.query(
       `
-      SELECT 
-      T0.id_ocst,T1.customer_name
-      FROM 
-          sim.OSVT T0
 
-     
-          LEFT JOIN sim.OCST T1 ON T0.id_ocst = T1.id_ocst
-      WHERE 
-          customer_name LIKE :customer_name
- 
-          GROUP BY customer_name DESC
+
+          SELECT 
+          parent_ocst as id_ocst,
+          child_ocst as customer_name
+          FROM sim2.TOSOR_copy1  
+          WHERE identifier IN(
+	        SELECT identifier FROM sim.OSVT WHERE is_join_visit = 1 AND
+            child_ocst LIKE :customer_name
+          ) 
         `,
       {
         type: dbSim.QueryTypes.SELECT,
@@ -158,7 +152,6 @@ export const getDataCustomerSalesVisit = async (req, res) => {
     console.log(error);
   }
 };
-
 
 export const getDataCustomerProspective = async (req, res) => {
   try {
@@ -185,15 +178,18 @@ export const getDataCustomerProspective = async (req, res) => {
   }
 };
 
-
-
-
 export const getCustomerByArea = async (req, res) => {
   try {
+    let filter = `= :employee_id`;
+    if (req.query.employee_id == "20012001" || req.query.employee_id == "16081001" ||
+    
+    req.query.employee_id == "17020101" || req.query.employee_id == "14031501" ||
+    req.query.employee_id == "23020101"
+    ) {
+      filter = `IS NOT NULL`;
+    }
     const result = await dbSim.query(
       `
-
-
       SELECT 
          id_ocst, customer_name  
       FROM 
@@ -201,7 +197,7 @@ export const getCustomerByArea = async (req, res) => {
       WHERE 
          id_oara IN(
           SELECT id_oara FROM sim.OARA 
-          WHERE sales_code = :employee_id
+          WHERE sales_code ${filter}
          
           AND is_active=1
         )

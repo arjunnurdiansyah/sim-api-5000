@@ -1,6 +1,6 @@
 import dbSim from "../../config/db_sim.js";
 
-export const getListTimeSheet = async (req, res) => {
+export const getDraft = async (req, res) => {
   try {
     const result = await dbSim.query(
       `
@@ -30,24 +30,36 @@ export const getListTimeSheet = async (req, res) => {
     console.log(error);
   }
 };
-export const getDataCustomerTime = async (req, res) => {
-  try {
+export const getCustomer = async (req, res) => {
+   try {
+    let filter = `= :employee_id`;
+    if (req.query.employee_id == "20012001" || req.query.employee_id == "16081001" ||
+    
+    req.query.employee_id == "17020101" || req.query.employee_id == "14031501" ||
+    req.query.employee_id == "23020101"
+    ) {
+      filter = `IS NOT NULL`;
+    }
     const result = await dbSim.query(
       `
       SELECT 
-         T0.id_ocst, T0.customer_name, T0.parent_ocst, T0.id_oreg, T0.id_osrg, T0.id_oara, IFNULL(T0.street, "") AS street, T0.id_oprv, T0.id_octy, T0.id_ogrp
-      FROM sim.OCST T0
-      LEFT JOIN sim.OARA T1 ON T0.id_oara = T1.id_oara
-      LEFT JOIN sim.OPRV T2 ON T0.id_oprv = T2.id_oprv
-      LEFT JOIN sim.OCTY T3 ON T0.id_octy = T3.id_octy
-      WHERE T1.sales_code = :employee_id  
-      AND customer_name LIKE :customer_name
-        `,
+         id_ocst, customer_name  
+      FROM 
+         sim.OCST 
+      WHERE 
+         id_oara IN(
+          SELECT id_oara FROM sim.OARA 
+          WHERE sales_code ${filter}
+         
+          AND is_active=1
+        )
+        AND customer_name LIKE :customer_name
+          `,
       {
         type: dbSim.QueryTypes.SELECT,
-        replacements: { 
+        replacements: {
+          customer_name: `%${req.query.customer_name}%`,
           employee_id: req.query.employee_id,
-          customer_name: `%${req.query.customer_name}%` 
         },
       }
     );

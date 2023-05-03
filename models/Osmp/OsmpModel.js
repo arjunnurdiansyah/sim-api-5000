@@ -18,13 +18,13 @@ const OSMP = dbSim.define(
       type: DataTypes.STRING,
     },
     employee_id: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING,
     },
     id_ocst: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING,
     },
     remarks: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING,
     },
     file_name: {
       type: DataTypes.STRING,
@@ -78,7 +78,6 @@ const SMP1 = dbSim.define(
   }
 );
 
-
 const SMP2 = dbSim.define(
   "SMP2",
   {
@@ -113,5 +112,5 @@ const SMP2 = dbSim.define(
     freezeTableName: true,
     timestamps: false,
   }
-  );
-export { OSMP, SMP1,SMP2 };
+);
+export { OSMP, SMP1, SMP2 };

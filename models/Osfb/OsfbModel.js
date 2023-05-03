@@ -18,13 +18,13 @@ const OSFB = dbSim.define(
       type: DataTypes.STRING,
     },
     employee_id: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING,
     },
     id_ocst: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING,
     },
     remarks: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING,
     },
     file_name: {
       type: DataTypes.STRING,
@@ -75,7 +75,6 @@ const SFB1 = dbSim.define(
   }
 );
 
-
 const SFB2 = dbSim.define(
   "SFB2",
   {
@@ -88,7 +87,6 @@ const SFB2 = dbSim.define(
     },
     type: {
       type: DataTypes.STRING,
-  
     },
     file_name: {
       type: DataTypes.STRING,
@@ -111,6 +109,6 @@ const SFB2 = dbSim.define(
     freezeTableName: true,
     timestamps: false,
   }
-  );
+);
 
 export { OSFB, SFB1, SFB2 };

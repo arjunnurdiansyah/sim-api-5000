@@ -35,6 +35,7 @@ export const getDataCheck = async (req, res) => {
                   AND employee_id = T0.employee_id 
                   AND id_ocst = T0.id_ocst 
                   AND type_check = 'CHECKIN'
+                  AND matching_id = T0.matching_id
                 ORDER BY
                   id_ocek DESC
                 LIMIT 1
@@ -42,7 +43,7 @@ export const getDataCheck = async (req, res) => {
                 "" 
               )) AS document_date,
             type_check,
-          IF
+          IFNULL(IF
             (
               T0.remarks = 'OPCT',(
               SELECT
@@ -55,7 +56,7 @@ export const getDataCheck = async (req, res) => {
                 id_opct DESC
               LIMIT 1
               ),
-            ( SELECT customer_name FROM OCST WHERE id_ocst = T0.id_ocst )) AS customer_name,
+            ( SELECT customer_name FROM OCST WHERE id_ocst = T0.id_ocst )),'') AS customer_name,
           IF
             (
               T0.remarks = 'OPCT',
@@ -70,6 +71,7 @@ export const getDataCheck = async (req, res) => {
                   AND employee_id = T0.employee_id 
                   AND id_ocst = T0.id_ocst 
                   AND type_check = 'CHECKOUT'
+                  AND matching_id = T0.matching_id
                 ORDER BY
                   id_ocek DESC
                 LIMIT 1 
@@ -78,10 +80,10 @@ export const getDataCheck = async (req, res) => {
               )) AS checkout_date,
               T0.is_edit,
               T0.id_ocek,
-              T0.identifier,
+              IFNULL(T0.identifier,'') AS identifier,
               IF(LEFT(T0.document_date,10) = DATE_FORMAT(NOW(),'%Y-%m-%d') AND T0.matching_id <> 'TOSOR', 'TRUE', 'FALSE') AS show_button_old,
-              IF(T0.matching_id <> 'TOSOR', 'TRUE', 'FALSE') AS show_button,
-              T1.id_ogrp
+              IF(T0.matching_id NOT IN ('TOSOR', 'OPCT'), 'TRUE', 'FALSE') AS show_button,
+              IFNULL(T1.id_ogrp,0) AS id_ogrp
           FROM
             sim.OCEK T0 
             LEFT JOIN sim.OCST T1 ON T0.id_ocst = T1.id_ocst
@@ -90,9 +92,9 @@ export const getDataCheck = async (req, res) => {
             AND T0.employee_id = :employee_id 
             AND T0.type_check = 'CHECKIN' 
           GROUP BY
-            T0.id_ocst
+            T0.id_ocst, T0.matching_id
           ORDER BY
-            T0.document_date ASC 
+            T0.id_ocek ASC 
         `,
       {
         type: dbSim.QueryTypes.SELECT,

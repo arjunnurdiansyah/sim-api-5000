@@ -19,7 +19,7 @@ export const getDataLastCheckIn = async (req, res) => {
           T0.is_active = '1'
           AND T0.identifier = :identifier
         ORDER BY
-          T0.id_ocek DESC
+          T0.id_ocek ASC
         LIMIT
           1 
       `,

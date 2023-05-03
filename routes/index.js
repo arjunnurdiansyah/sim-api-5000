@@ -75,7 +75,7 @@ import { getNationalSalesRevenue } from "../controllers/Sales/SalesRevenueDashbo
 //   getDataCustomerTime,
 // } from "../controllers/ListTimeSheet/ListTimeSheetController.js";
 
-import { insertHeaderTimeSheet } from "../controllers/ListTimeSheet/InsertTimeSheetController.js";
+// import { insertHeaderTimeSheet } from "../controllers/ListTimeSheet/InsertTimeSheetController.js";
 
 import {
   insertHeaderCheckIn,
@@ -83,7 +83,7 @@ import {
   getDataCustomerOffsiteMeeting,
   getDataCustomerSalesVisit,
   getDataCustomerProspective,
-  getCustomerByArea
+  getCustomerByArea,
 } from "../controllers/CheckIn/CheckInController.js";
 
 import { getDataAtt } from "../controllers/ListAtt/ListAttController.js";
@@ -101,12 +101,9 @@ import {
 
 // import { insertDataProspectiveCustomer } from "../controllers/ProspectiveCustomer/ProspectiveCustomerController.js";
 
-import {
-  getListTimeSheet,
-  getDataCustomerTime,
-} from "../controllers/ListTimeSheet/ListTimeSheetController.js";
+import { getDraft,getCustomer} from "../controllers/ListTimeSheet/ListTimeSheetController.js";
 
-// import { insertDataTimeSheet } from "../controllers/ListTimeSheet/InsertTimeSheetController.js";
+import { insertHeaderTimeSheet } from "../controllers/ListTimeSheet/InsertTimeSheetController.js";
 
 import { insertDataProspectiveCustomer } from "../controllers/ProspectiveCustomer/ProspectiveCustomerController.js";
 
@@ -140,15 +137,12 @@ import {
   getDataDraftProgramPromo,
 } from "../controllers/SalesVisit/ProgramPromoController.js";
 
-
 import {
   insertHeaderOffsiteMeeting,
   insertDetailOffsiteMeeting,
   insertAttachmentOffsiteMeeting,
   getDataDraftOffsiteMeeting,
 } from "../controllers/OffsiteMeeting/OffsiteMeetingController.js";
-
-
 
 const router = express.Router();
 
@@ -163,17 +157,20 @@ router.delete("/logout", Logout);
 router.get("/session", verifyToken, getSession);
 
 // SALES - DASHBOARD
-router.get("/sales/dashboard/national-sales", verifyToken, getNationSales);
-router.get(
-  "/sales/dashboard/outstanding-so",
-  verifyToken,
-  getOutstandingSalesOrder
-);
-router.get(
-  "/sales/dashboard/sales-achievement",
-  verifyToken,
-  getSalesAchievement
-);
+// router.get("/sales/dashboard/national-sales", verifyToken, getNationSales);
+// router.get(
+//   "/sales/dashboard/outstanding-so",
+//   verifyToken,
+//   getOutstandingSalesOrder
+// );
+// router.get(
+//   "/sales/dashboard/sales-achievement",
+//   verifyToken,
+//   getSalesAchievement
+// );
+router.get("/sales/dashboard/national-sales", getNationSales);
+router.get("/sales/dashboard/outstanding-so", getOutstandingSalesOrder);
+router.get("/sales/dashboard/sales-achievement", getSalesAchievement);
 router.get("/sales/dashboard/sales-achievement-count-days", getCountDays);
 router.get("/sales/dashboard/sales-revenue", getNationalSalesRevenue);
 
@@ -312,8 +309,8 @@ router.post("/checkin/visit-list/do-add-edit", updateIsEditChekcIn);
 
 // Menu Time Sheet
 router.post("/timesheet/header", insertHeaderTimeSheet);
-router.get("/timesheet/customer", getListTimeSheet);
-router.get("/timesheet/customertime", getDataCustomerTime);
+router.get("/timesheet/draft", getDraft);
+router.get("/timesheet/customer", getCustomer);
 
 // Menu Prospective Customer
 router.post("/prospectivecustomer", insertDataProspectiveCustomer);
@@ -329,13 +326,10 @@ router.post("/offside/detail", insertDetailOffsiteMeeting);
 router.post("/offside/attachment", insertAttachmentOffsiteMeeting);
 router.get("/offside/getold", getDataDraftOffsiteMeeting);
 
-// GetCustomer 
+// GetCustomer
 router.get("/checkin/offside-meeting", getDataCustomerOffsiteMeeting);
 router.get("/checkin/sales-visit", getDataCustomerSalesVisit);
 router.get("/checkin/prospective-customer", getDataCustomerProspective);
 router.get("/checkin/getCustomerByArea", getCustomerByArea);
-
-
-
 
 export default router;
