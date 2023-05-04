@@ -1,43 +1,38 @@
 import { Sequelize } from "sequelize";
-import dbSim from "../../config/db_sim.js";
+import dbSim2 from "../../config/db_sim2.js";
 
 const { DataTypes } = Sequelize;
 
-const OSVT = dbSim.define(
-  "OSVT",
+const OLOG = dbSim2.define(
+  "OLOG",
   {
-    id_osvt: {
+    id_olog: {
       type: DataTypes.INTEGER,
       primaryKey: true,
     },
-    document_code: {
-      type: DataTypes.STRING,
-    },
-    document_date: {
-      type: DataTypes.DATE,
-      defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
-    },
-    posting_date: {
+    date_time: {
       type: DataTypes.DATE(6),
       defaultValue: DataTypes.NOW,
     },
-    document_status: {
-      type: DataTypes.STRING,
-      defaultValue: "OPEN",
-    },
-    identifier: {
+    form_sender: {
       type: DataTypes.STRING,
     },
-    id_ocst: {
+    remarks: {
+      type: DataTypes.STRING,
+    },
+    source: {
       type: DataTypes.STRING,
     },
     id_ousr: {
       type: DataTypes.STRING,
     },
-    is_join_visit: {
+    host_name: {
       type: DataTypes.STRING,
     },
-    is_prospective_visit: {
+    ip_address: {
+      type: DataTypes.STRING,
+    },
+    mac_address: {
       type: DataTypes.STRING,
     },
   },
@@ -47,4 +42,4 @@ const OSVT = dbSim.define(
   }
 );
 
-export { OSVT };
+export { OLOG };

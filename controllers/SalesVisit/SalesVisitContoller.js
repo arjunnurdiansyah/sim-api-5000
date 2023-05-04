@@ -9,8 +9,42 @@ export const getDataLastCheckIn = async (req, res) => {
       `
         SELECT 
           IFNULL(T0.id_ocek, -1) AS id_ocek, 
-          IFNULL(T0.id_ocst, 'CUS00000') AS id_ocst, 
-          IFNULL(T1.customer_name, '') AS customer_name,
+          IFNULL(
+            IF
+            (
+              T0.matching_id = 'OPCT',
+              (
+                SELECT
+                  id_opct 
+                FROM
+                  OPCT 
+                WHERE
+                  id_opct = T0.id_ocst 
+                ORDER BY
+                  id_opct DESC
+                LIMIT 1
+              ),
+              T0.id_ocst
+            )
+          , 'CUS00000')  AS id_ocst,
+          IFNULL(
+            IF
+            (
+              T0.matching_id = 'OPCT',
+              (
+                SELECT
+                  customer_name 
+                FROM
+                  OPCT 
+                WHERE
+                  id_opct = T0.id_ocst 
+                ORDER BY
+                  id_opct DESC
+                LIMIT 1
+              ),
+              T1.customer_name
+            )
+          , '')  AS customer_name,
           IFNULL(T0.identifier, '') AS identifier
         FROM 
           sim.OCEK T0

@@ -23,7 +23,7 @@ export const getDataCheck = async (req, res) => {
         SELECT
           IF
             (
-              T0.remarks = 'OPCT',
+              T0.matching_id = 'OPCT',
               document_date,
               IFNULL((
                 SELECT
@@ -37,30 +37,30 @@ export const getDataCheck = async (req, res) => {
                   AND type_check = 'CHECKIN'
                   AND matching_id = T0.matching_id
                 ORDER BY
-                  id_ocek DESC
+                  id_ocek ASC
                 LIMIT 1
                   ),
                 "" 
-              )) AS document_date,
+              )
+            ) AS document_date,
             type_check,
-          IFNULL(IF
-            (
-              T0.remarks = 'OPCT',(
-              SELECT
-                customer_name 
-              FROM
-                OPCT 
-              WHERE
-                id_opct = T0.id_ocst 
-              ORDER BY
-                id_opct DESC
-              LIMIT 1
-              ),
-            ( SELECT customer_name FROM OCST WHERE id_ocst = T0.id_ocst )),'') AS customer_name,
-          IF
-            (
-              T0.remarks = 'OPCT',
-              document_date,
+            IFNULL(
+              IF
+              (
+                T0.matching_id = 'OPCT',
+                (
+                  SELECT
+                    customer_name 
+                  FROM
+                    OPCT 
+                  WHERE
+                    id_opct = T0.id_ocst 
+                  ORDER BY
+                    id_opct DESC
+                  LIMIT 1
+                ),
+                ( SELECT customer_name FROM OCST WHERE id_ocst = T0.id_ocst )
+              ) ,'') AS customer_name,
               IFNULL((
                 SELECT
                   document_date 
@@ -77,13 +77,14 @@ export const getDataCheck = async (req, res) => {
                 LIMIT 1 
                   ),
                 "" 
-              )) AS checkout_date,
+              ) AS checkout_date,
               T0.is_edit,
               T0.id_ocek,
               IFNULL(T0.identifier,'') AS identifier,
               IF(LEFT(T0.document_date,10) = DATE_FORMAT(NOW(),'%Y-%m-%d') AND T0.matching_id <> 'TOSOR', 'TRUE', 'FALSE') AS show_button_old,
-              IF(T0.matching_id NOT IN ('TOSOR', 'OPCT'), 'TRUE', 'FALSE') AS show_button,
-              IFNULL(T1.id_ogrp,0) AS id_ogrp
+              IF(T0.matching_id NOT IN ('TOSOR'), 'TRUE', 'FALSE') AS show_button,
+              IFNULL(T1.id_ogrp, 0) AS id_ogrp,
+              IFNULL(T0.matching_id, '') AS matching_id
           FROM
             sim.OCEK T0 
             LEFT JOIN sim.OCST T1 ON T0.id_ocst = T1.id_ocst

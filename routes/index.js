@@ -9,6 +9,7 @@ import {
   Logout,
   LoginWithUUID,
   getSession,
+  insertLog,
 } from "../controllers/Users/UsersController.js";
 
 import {
@@ -101,7 +102,10 @@ import {
 
 // import { insertDataProspectiveCustomer } from "../controllers/ProspectiveCustomer/ProspectiveCustomerController.js";
 
-import { getDraft,getCustomer} from "../controllers/ListTimeSheet/ListTimeSheetController.js";
+import {
+  getDraft,
+  getCustomer,
+} from "../controllers/ListTimeSheet/ListTimeSheetController.js";
 
 import { insertHeaderTimeSheet } from "../controllers/ListTimeSheet/InsertTimeSheetController.js";
 
@@ -144,6 +148,11 @@ import {
   getDataDraftOffsiteMeeting,
 } from "../controllers/OffsiteMeeting/OffsiteMeetingController.js";
 
+import {
+  getDataProspectiveCustomer,
+  getDataProspectiveVisit,
+} from "../controllers/ProspectiveVisit/ProspectiveVisitContoller.js";
+
 const router = express.Router();
 
 // AUTH
@@ -155,6 +164,7 @@ router.post("/login2", LoginWithUUID);
 router.post("/token", accessToken);
 router.delete("/logout", Logout);
 router.get("/session", verifyToken, getSession);
+router.post("/user/log", insertLog);
 
 // SALES - DASHBOARD
 // router.get("/sales/dashboard/national-sales", verifyToken, getNationSales);
@@ -331,5 +341,9 @@ router.get("/checkin/offside-meeting", getDataCustomerOffsiteMeeting);
 router.get("/checkin/sales-visit", getDataCustomerSalesVisit);
 router.get("/checkin/prospective-customer", getDataCustomerProspective);
 router.get("/checkin/getCustomerByArea", getCustomerByArea);
+
+// PROSPECTIVE VISIT
+router.get("/prospective-visit/customer", getDataProspectiveCustomer);
+router.get("/prospective-visit/header", getDataProspectiveVisit);
 
 export default router;

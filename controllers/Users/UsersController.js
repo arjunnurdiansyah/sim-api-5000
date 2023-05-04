@@ -2,6 +2,7 @@ import { Users, Usr1 } from "../../models/UserModel.js";
 import jwt from "jsonwebtoken";
 import md5 from "md5";
 import dbHris from "../../config/db_hris.js";
+import { OLOG } from "../../models/Olog/OlogModel.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -223,3 +224,14 @@ export const getSession = async (req, res) => {
 //     console.log(error);
 //   }
 // };
+
+export const insertLog = async (req, res) => {
+  try {
+    await OLOG.create(req.body);
+
+    res.status(200).json({ msg: "Success", data: req.body });
+  } catch (err) {
+    res.status(500).json({ msg: err });
+    console.log(err);
+  }
+};
