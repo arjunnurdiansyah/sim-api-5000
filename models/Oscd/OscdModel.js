@@ -71,6 +71,9 @@ const SCD1 = dbSim.define(
     price: {
       type: DataTypes.STRING,
     },
+    program_promo: {
+      type: DataTypes.STRING,
+    },
     identifier: {
       type: DataTypes.STRING,
     },
@@ -115,6 +118,6 @@ const SCD2 = dbSim.define(
     freezeTableName: true,
     timestamps: false,
   }
-  );
+);
 
-export { OSCD, SCD1,SCD2 };
+export { OSCD, SCD1, SCD2 };

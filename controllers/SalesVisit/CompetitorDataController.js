@@ -202,7 +202,8 @@ export const getDataDraftCompetitorData = async (req, res) => {
         T1.price,
         T1.identifier,
         T1.is_active,
-        T2.description
+        T2.description,
+        IFNULL(T1.program_promo, '') AS program_promo
         FROM sim.OSCD T0
         LEFT JOIN sim.SCD1 T1 ON T0.id_oscd = T1.id_oscd
         LEFT JOIN sim.BRN2 T2 ON T2.id_brn2 = T1.id_brn2

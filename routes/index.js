@@ -91,6 +91,7 @@ import { getDataAtt } from "../controllers/ListAtt/ListAttController.js";
 import {
   getDataCheck,
   updateIsEditChekcIn,
+  getDataClockInOut,
 } from "../controllers/ListCheck/ListCheckController.js";
 import {
   getDataOPRV,
@@ -316,6 +317,7 @@ router.get("/attendance/customer", getDataAtt);
 // Menu Check List
 router.get("/checkin/customer", getDataCheck);
 router.post("/checkin/visit-list/do-add-edit", updateIsEditChekcIn);
+router.get("/checkin/visit-list/clock-in-out", getDataClockInOut);
 
 // Menu Time Sheet
 router.post("/timesheet/header", insertHeaderTimeSheet);

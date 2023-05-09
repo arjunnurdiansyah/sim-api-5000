@@ -134,3 +134,47 @@ export const updateIsEditChekcIn = async (req, res) => {
     console.log(err);
   }
 };
+
+export const getDataClockInOut = async (req, res) => {
+  try {
+    let order = "";
+    if (req.query.type_att == "CLOCKIN") {
+      order = "ASC";
+    } else if (req.query.type_att == "CLOCKOUT") {
+      order = "DESC";
+    }
+    const result = await dbSim.query(
+      `
+          SELECT
+            IF(
+              COUNT(T0.id_oatt) = 0,
+              'TRUE',
+              'FALSE'
+            ) show_button_clock_in_out,
+            IFNULL(T0.document_date, '') AS document_date
+          FROM
+            sim.OATT T0 
+          WHERE
+            T0.document_date LIKE :document_date 
+            AND T0.employee_id = :employee_id 
+            AND T0.type_att = :type_att 
+          ORDER BY
+            T0.id_oatt ${order}
+          LIMIT 
+            1
+        `,
+      {
+        type: dbSim.QueryTypes.SELECT,
+        replacements: {
+          employee_id: req.query.employee_id,
+          document_date: `%${req.query.document_date}%`,
+          type_att: req.query.type_att,
+        },
+      }
+    );
+    res.status(200).json({ msg: "Success", data: result });
+  } catch (error) {
+    res.status(404).json({ msg: "Data Not Found! " });
+    console.log(error);
+  }
+};
