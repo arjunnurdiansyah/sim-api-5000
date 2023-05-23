@@ -35,6 +35,16 @@ const OCEK = dbSim.define(
     remarks: {
       type: DataTypes.STRING,
     },
+    sales_code_join_visit: {
+      type: DataTypes.STRING,
+    },
+    external_sales_name_join_visit: {
+      type: DataTypes.STRING,
+    },
+    shop_closed: {
+      type: DataTypes.STRING(1),
+      defaultValue: "0",
+    },
     file_name: {
       type: DataTypes.STRING,
     },
@@ -55,6 +65,10 @@ const OCEK = dbSim.define(
       defaultValue: "1",
     },
     is_edit: {
+      type: DataTypes.STRING(1),
+      defaultValue: "0",
+    },
+    is_offsite_meeting: {
       type: DataTypes.STRING(1),
       defaultValue: "0",
     },

@@ -2,7 +2,7 @@ import uploadFileMiddleware from "../../middleware/ProspectiveCustomer/Prospecti
 import fs from "fs";
 import { OPCT } from "../../models/Opct/OpctModel.js";
 
-export const insertDataProspectiveCustomer = async (req, res) => {
+export const insertDataProspectiveCustomerOld = async (req, res) => {
   try {
     await uploadFileMiddleware(req, res);
 
@@ -28,6 +28,16 @@ export const insertDataProspectiveCustomer = async (req, res) => {
     res.status(500).send({
       msg: `Could not upload the file: ${req.file}. ${err}`,
     });
+  }
+};
+
+export const insertDataProspectiveCustomer = async (req, res) => {
+  try {
+    await OPCT.create(req.body);
+    res.status(200).json({ msg: "Success", data: [] });
+  } catch (err) {
+    res.status(500).json({ msg: err });
+    console.log(err);
   }
 };
 

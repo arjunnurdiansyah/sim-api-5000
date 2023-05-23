@@ -67,16 +67,12 @@ import {
   getDetailPaymentReceipt,
 } from "../controllers/SalesVisit/PaymentReceiptContoller.js";
 
-import { postingSalesVisit } from "../controllers/SalesVisit/PostingSalesVisitController.js";
+import {
+  postingSalesVisit,
+  getDataSalesVisit,
+} from "../controllers/SalesVisit/PostingSalesVisitController.js";
 
 import { getNationalSalesRevenue } from "../controllers/Sales/SalesRevenueDashboardController.js";
-
-// import {
-//   getListTimeSheet,
-//   getDataCustomerTime,
-// } from "../controllers/ListTimeSheet/ListTimeSheetController.js";
-
-// import { insertHeaderTimeSheet } from "../controllers/ListTimeSheet/InsertTimeSheetController.js";
 
 import {
   insertHeaderCheckIn,
@@ -85,6 +81,9 @@ import {
   getDataCustomerSalesVisit,
   getDataCustomerProspective,
   getCustomerByArea,
+  getDataSalesName,
+  getDataCustomerActiveOutlet,
+  getDataOthers,
 } from "../controllers/CheckIn/CheckInController.js";
 
 import { getDataAtt } from "../controllers/ListAtt/ListAttController.js";
@@ -92,6 +91,8 @@ import {
   getDataCheck,
   updateIsEditChekcIn,
   getDataClockInOut,
+  removeChekcIn,
+  showRecapData,
 } from "../controllers/ListCheck/ListCheckController.js";
 import {
   getDataOPRV,
@@ -106,6 +107,7 @@ import {
 import {
   getDraft,
   getCustomer,
+  removeTimeSheet,
 } from "../controllers/ListTimeSheet/ListTimeSheetController.js";
 
 import { insertHeaderTimeSheet } from "../controllers/ListTimeSheet/InsertTimeSheetController.js";
@@ -153,6 +155,8 @@ import {
   getDataProspectiveCustomer,
   getDataProspectiveVisit,
 } from "../controllers/ProspectiveVisit/ProspectiveVisitContoller.js";
+
+import { insertDataActiveOutlet } from "../controllers/ActiveOutlet/ActiveOutletController.js";
 
 const router = express.Router();
 
@@ -202,6 +206,7 @@ router.get("/sales-visit/so-request/header", getHeaderSORequest);
 router.get("/sales-visit/so-request/detail", getDetailSORequest);
 router.get("/sales-visit/so-request/attachment", getAttachmentSORequest);
 router.post("/sales-visit/posting", postingSalesVisit);
+router.get("/sales-visit/posting", getDataSalesVisit);
 
 // PAYMENT RECEIPT
 router.get("/sales-visit/pay-receipt/piutang", getDataPiutangCustomer);
@@ -318,11 +323,14 @@ router.get("/attendance/customer", getDataAtt);
 router.get("/checkin/customer", getDataCheck);
 router.post("/checkin/visit-list/do-add-edit", updateIsEditChekcIn);
 router.get("/checkin/visit-list/clock-in-out", getDataClockInOut);
+router.post("/checkin/visit-list/do-remove", removeChekcIn);
+router.get("/checkin/visit-list/show-recap-data", showRecapData);
 
 // Menu Time Sheet
 router.post("/timesheet/header", insertHeaderTimeSheet);
 router.get("/timesheet/draft", getDraft);
 router.get("/timesheet/customer", getCustomer);
+router.post("/timesheet/remove", removeTimeSheet);
 
 // Menu Prospective Customer
 router.post("/prospectivecustomer", insertDataProspectiveCustomer);
@@ -343,9 +351,15 @@ router.get("/checkin/offside-meeting", getDataCustomerOffsiteMeeting);
 router.get("/checkin/sales-visit", getDataCustomerSalesVisit);
 router.get("/checkin/prospective-customer", getDataCustomerProspective);
 router.get("/checkin/getCustomerByArea", getCustomerByArea);
+router.get("/checkin/sales", getDataSalesName);
+router.get("/checkin/active-outlet", getDataCustomerActiveOutlet);
+router.get("/checkin/others", getDataOthers);
 
 // PROSPECTIVE VISIT
 router.get("/prospective-visit/customer", getDataProspectiveCustomer);
 router.get("/prospective-visit/header", getDataProspectiveVisit);
+
+// ACTIVE OUTLER
+router.post("/active-outlet/header", insertDataActiveOutlet);
 
 export default router;

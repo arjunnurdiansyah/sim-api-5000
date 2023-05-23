@@ -89,6 +89,9 @@ const OPCT = dbSim.define(
     survey_conclusion: {
       type: DataTypes.STRING,
     },
+    new_open_outlet: {
+      type: DataTypes.STRING,
+    },
     file_name: {
       type: DataTypes.STRING,
     },

@@ -32,6 +32,9 @@ const OSOM = dbSim.define(
     summary: {
       type: DataTypes.STRING(255),
     },
+    matching_id: {
+      type: DataTypes.STRING,
+    },
     identifier: {
       type: DataTypes.STRING,
     },
@@ -80,6 +83,6 @@ const SOM1 = dbSim.define(
     freezeTableName: true,
     timestamps: false,
   }
-  );
+);
 
-export {OSOM,SOM1 };
+export { OSOM, SOM1 };

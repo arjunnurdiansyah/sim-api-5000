@@ -1,5 +1,6 @@
 import dbSim from "../../config/db_sim.js";
 import { TOSOR, TSOR1, TSOR3 } from "../../models/Tosor/TosorModel.js";
+import { OCEK } from "../../models/Ocek/OcekModel.js";
 import uploadFileMiddleware from "../../middleware/SalesVisit/SalesVisitMiddleware.js";
 
 // Param = id_ousr
@@ -12,16 +13,17 @@ export const getDataLastCheckIn = async (req, res) => {
           IFNULL(
             IF
             (
-              T0.matching_id = 'OPCT',
+              T0.matching_id = 'OCAO',
               (
                 SELECT
-                  id_opct 
+                  T01.id_ocst 
                 FROM
-                  OPCT 
+                  OCAO T00
+                  LEFT JOIN sim.OCST T01 ON T00.id_ocst = T01.id_ocst
                 WHERE
-                  id_opct = T0.id_ocst 
+                  T00.id_ocao = T0.id_ocst 
                 ORDER BY
-                  id_opct DESC
+                  T00.id_ocao DESC
                 LIMIT 1
               ),
               T0.id_ocst
@@ -42,10 +44,31 @@ export const getDataLastCheckIn = async (req, res) => {
                   id_opct DESC
                 LIMIT 1
               ),
-              T1.customer_name
+              IF(
+                T0.matching_id = 'OCAO',
+                (
+                  SELECT
+                    T01.customer_name 
+                  FROM
+                    OCAO T00
+                    LEFT JOIN sim.OCST T01 ON T00.id_ocst = T01.id_ocst
+                  WHERE
+                    T00.id_ocao = T0.id_ocst 
+                  ORDER BY
+                    T00.id_ocao DESC
+                  LIMIT 1
+                ),
+                T1.customer_name
+              )
             )
           , '')  AS customer_name,
-          IFNULL(T0.identifier, '') AS identifier
+          IFNULL(T0.identifier, '') AS identifier,
+          IF(
+            T0.matching_id = 'OCAO', 
+            T0.remarks,
+            ''
+          ) AS active_outlet,
+          T0.id_ocst AS id_active_outlet
         FROM 
           sim.OCEK T0
           LEFT JOIN sim.OCST T1 ON T0.id_ocst = T1.id_ocst
@@ -342,30 +365,111 @@ export const getHeaderSORequest = async (req, res) => {
     //     "identifier" : "asdasdas"
     // }
 
-    let result = await TOSOR.findOne({
+    let ocek = await OCEK.findOne({
       where: {
         identifier: req.query.identifier,
+        is_edit: "1",
       },
     });
 
-    let child = [{ customer_name: "" }];
-    if (result) {
-      child = await dbSim.query(
-        `
+    if (ocek) {
+      let result = await TOSOR.findOne({
+        where: {
+          identifier: req.query.identifier,
+        },
+      });
+
+      let child = [{ customer_name: "" }];
+      if (result) {
+        child = await dbSim.query(
+          `
           SELECT customer_name
-          FROM sim.OCST 
+          FROM sim.OCST
           WHERE id_ocst = :id_ocst
         `,
-        {
-          type: dbSim.QueryTypes.SELECT,
-          replacements: {
-            id_ocst: result.child_ocst,
-          },
-        }
+          {
+            type: dbSim.QueryTypes.SELECT,
+            replacements: {
+              id_ocst: result.child_ocst,
+            },
+          }
+        );
+      }
+
+      res.status(200).json({ msg: "Success", data: [result], data2: child });
+    } else {
+      await TOSOR.destroy({
+        where: {
+          identifier: req.query.identifier,
+        },
+      }).then(
+        async () =>
+          await TSOR1.destroy({
+            where: {
+              identifier: req.query.identifier,
+            },
+          }).then(
+            async () =>
+              await TSOR3.destroy({
+                where: {
+                  identifier: req.query.identifier,
+                },
+              }).then(async () => {
+                let result = await TOSOR.findOne({
+                  where: {
+                    identifier: req.query.identifier,
+                  },
+                });
+
+                let child = [{ customer_name: "" }];
+                if (result) {
+                  child = await dbSim.query(
+                    `
+                    SELECT customer_name
+                    FROM sim.OCST 
+                    WHERE id_ocst = :id_ocst
+                  `,
+                    {
+                      type: dbSim.QueryTypes.SELECT,
+                      replacements: {
+                        id_ocst: result.child_ocst,
+                      },
+                    }
+                  );
+                }
+
+                res
+                  .status(200)
+                  .json({ msg: "Success", data: [result], data2: child });
+              })
+          )
       );
     }
 
-    res.status(200).json({ msg: "Success", data: [result], data2: child });
+    // let result = await TOSOR.findOne({
+    //   where: {
+    //     identifier: req.query.identifier,
+    //   },
+    // });
+
+    // let child = [{ customer_name: "" }];
+    // if (result) {
+    //   child = await dbSim.query(
+    //     `
+    //       SELECT customer_name
+    //       FROM sim.OCST
+    //       WHERE id_ocst = :id_ocst
+    //     `,
+    //     {
+    //       type: dbSim.QueryTypes.SELECT,
+    //       replacements: {
+    //         id_ocst: result.child_ocst,
+    //       },
+    //     }
+    //   );
+    // }
+
+    // res.status(200).json({ msg: "Success", data: [result], data2: child });
   } catch (err) {
     res.status(500).json({ msg: err });
     console.log(err);

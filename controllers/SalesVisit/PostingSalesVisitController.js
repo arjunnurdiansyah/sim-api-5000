@@ -176,3 +176,28 @@ export const postingSalesVisit = async (req, res) => {
     console.log(err);
   }
 };
+
+export const getDataSalesVisit = async (req, res) => {
+  try {
+    const result = await dbSim.query(
+      `
+        SELECT
+          *
+        FROM 
+          sim.OSVT
+        WHERE 
+          identifier = :identifier
+      `,
+      {
+        type: dbSim.QueryTypes.SELECT,
+        replacements: {
+          identifier: req.query.identifier,
+        },
+      }
+    );
+    res.status(200).json({ msg: "Success", data: result });
+  } catch (error) {
+    res.status(404).json({ msg: "Data Not Found! " });
+    console.log(error);
+  }
+};

