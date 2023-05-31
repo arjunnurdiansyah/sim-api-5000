@@ -48,6 +48,36 @@ const OATT = dbSim.define(
       type: DataTypes.STRING(1),
       defaultValue: "1",
     },
+    road: {
+      type: DataTypes.STRING,
+    },
+    village: {
+      type: DataTypes.STRING,
+    },
+    suburb: {
+      type: DataTypes.STRING,
+    },
+    city_district: {
+      type: DataTypes.STRING,
+    },
+    town: {
+      type: DataTypes.STRING,
+    },
+    county: {
+      type: DataTypes.STRING,
+    },
+    city: {
+      type: DataTypes.STRING,
+    },
+    state: {
+      type: DataTypes.STRING,
+    },
+    postcode: {
+      type: DataTypes.STRING,
+    },
+    display_name: {
+      type: DataTypes.STRING,
+    },
   },
   {
     freezeTableName: true,

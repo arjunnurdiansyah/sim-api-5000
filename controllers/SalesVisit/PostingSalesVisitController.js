@@ -81,12 +81,26 @@ export const postingSalesVisit = async (req, res) => {
         IF((SELECT count_so) > 0, 'TRUE', 'FALSE')
       ) AS do_posting_join_visit_old,
       'TRUE' AS do_posting,
-      'TRUE' AS do_posting_join_visit
+      'TRUE' AS do_posting_join_visit,
+      (
+        SELECT LEFT(document_date, 10)
+        FROM sim.OCEK
+        WHERE 
+          identifier = :identifier
+          AND is_active = '1'  
+          AND id_ousr	= :id_ousr
+          AND id_ocst = :id_ocst
+          AND type_check = 'CHECKIN'
+        GROUP BY 
+          identifier 
+      ) chekin_date
       `,
       {
         type: dbSim.QueryTypes.SELECT,
         replacements: {
           identifier: req.body.identifier,
+          id_ousr: req.body.id_ousr,
+          id_ocst: req.body.id_ocst,
         },
       }
     );
@@ -125,6 +139,7 @@ export const postingSalesVisit = async (req, res) => {
       number = getNumber(number);
       let svt_code = getDocCodeWithDate("IBM", number, "SVT", month, year);
       req.body.document_code = svt_code;
+      req.body.document_date = checkBeforePosting[0].chekin_date;
       await OSVT.create(req.body);
 
       const tableOSVT = await OSVT.findOne({
