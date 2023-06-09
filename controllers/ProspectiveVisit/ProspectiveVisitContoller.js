@@ -14,7 +14,7 @@ export const getDataProspectiveCustomer = async (req, res) => {
             T0.employee_id,
             T1.nama_karyawan AS employee_name,
             T0.customer_name,
-            UPPER(T0.street_delivery) AS street_delivery,
+            IFNULL(UPPER(T0.street_delivery), '') AS street_delivery,
             T0.id_oprv,
             IFNULL(T2.province_name, '') AS province_name,
             T0.id_octy,

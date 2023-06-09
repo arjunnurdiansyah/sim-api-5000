@@ -19,7 +19,7 @@ export const insertHeaderCheckIn = async (req, res) => {
     //   },
     // });
 
-    // let url = `https://geocode.maps.co/reverse?lat=${req.body.latitude}&lon=${req.body.longitude}`;
+    let url2 = `https://geocode.maps.co/reverse?lat=${req.body.latitude}&lon=${req.body.longitude}`;
     let url = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=pjson&featureTypes=&location=${req.body.longitude}%2C${req.body.latitude}`;
 
     https
@@ -49,20 +49,45 @@ export const insertHeaderCheckIn = async (req, res) => {
             req.body.village = json.address.Neighborhood;
             req.body.suburb = json.address.PlaceName;
             req.body.city_district = json.address.District;
-            // req.body.town = json.address.town;
+            req.body.town = json.address.town;
             req.body.county = json.address.City;
             req.body.city = json.address.Subregion;
             req.body.state = json.address.Region;
             req.body.postcode = json.address.Postal;
             req.body.display_name = json.address.LongLabel;
 
-            await OCEK.create(req.body);
-            const tableOCEK = await OCEK.findOne({
-              attributes: ["id_ocek"],
-              where: { identifier: req.body.identifier },
-            });
+            https
+              .get(url2, (res3) => {
+                let body2 = "",
+                  json2 = "";
 
-            res.status(200).json({ msg: "Success", data: tableOCEK });
+                res3.on("data", (chunk) => {
+                  body2 += chunk;
+                });
+
+                res3.on("end", async () => {
+                  try {
+                    json2 = JSON.parse(body2);
+                    req.body.suburb = json2.address.suburb;
+                    req.body.town = json2.address.town;
+                    req.body.county = json2.address.county;
+                    req.body.city = json2.address.city;
+
+                    await OCEK.create(req.body);
+                    const tableOCEK = await OCEK.findOne({
+                      attributes: ["id_ocek"],
+                      where: { identifier: req.body.identifier },
+                    });
+
+                    res.status(200).json({ msg: "Success", data: tableOCEK });
+                  } catch (error) {
+                    console.error(error.message);
+                  }
+                });
+              })
+              .on("error", (error) => {
+                console.error(error.message);
+              });
           } catch (error) {
             console.error(error.message);
           }
@@ -71,13 +96,6 @@ export const insertHeaderCheckIn = async (req, res) => {
       .on("error", (error) => {
         console.error(error.message);
       });
-
-    // await OCEK.create(req.body);
-    // const tableOCEK = await OCEK.findOne({
-    //   attributes: ["id_ocek"],
-    //   where: { identifier: req.body.identifier },
-    // });
-    // res.status(200).json({ msg: "Success", data: tableOCEK });
   } catch (err) {
     if (err.code == "LIMIT_FILE_SIZE") {
       return res.status(500).json({

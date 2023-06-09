@@ -20,7 +20,7 @@ export const insertDataAttendance = async (req, res) => {
     //   msg: `Uploaded the file successfully: ${req.file.originalname}`,
     // });
 
-    // let url = `https://geocode.maps.co/reverse?lat=${req.body.latitude}&lon=${req.body.longitude}`;
+    let url2 = `https://geocode.maps.co/reverse?lat=${req.body.latitude}&lon=${req.body.longitude}`;
     let url = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=pjson&featureTypes=&location=${req.body.longitude}%2C${req.body.latitude}`;
 
     https
@@ -50,7 +50,6 @@ export const insertDataAttendance = async (req, res) => {
             req.body.village = json.address.Neighborhood;
             req.body.suburb = json.address.PlaceName;
             req.body.city_district = json.address.District;
-            // req.body.town = json.address.town;
             req.body.county = json.address.City;
             req.body.city = json.address.Subregion;
             req.body.state = json.address.Region;
@@ -61,10 +60,35 @@ export const insertDataAttendance = async (req, res) => {
             req.body.file_type = req.file.mimetype.split("/")[1];
             req.body.file_path = req.file.path;
 
-            await OATT.create(req.body);
-            res.status(200).send({
-              msg: `Uploaded the file successfully: ${req.file.originalname}`,
-            });
+            https
+              .get(url2, (res3) => {
+                let body2 = "",
+                  json2 = "";
+
+                res3.on("data", (chunk) => {
+                  body2 += chunk;
+                });
+
+                res3.on("end", async () => {
+                  try {
+                    json2 = JSON.parse(body2);
+                    req.body.suburb = json2.address.suburb;
+                    req.body.town = json2.address.town;
+                    req.body.county = json2.address.county;
+                    req.body.city = json2.address.city;
+
+                    await OATT.create(req.body);
+                    res.status(200).send({
+                      msg: `Uploaded the file successfully: ${req.file.originalname}`,
+                    });
+                  } catch (error) {
+                    console.error(error.message);
+                  }
+                });
+              })
+              .on("error", (error) => {
+                console.error(error.message);
+              });
           } catch (error) {
             console.error(error.message);
           }

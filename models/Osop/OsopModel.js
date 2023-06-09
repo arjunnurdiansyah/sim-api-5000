@@ -1,29 +1,37 @@
 import { Sequelize } from "sequelize";
-import db from "../config/db_sim.js";
+import dbSim from "../../config/db_sim.js";
 
 const { DataTypes } = Sequelize;
 
-const Users = db.define(
-  "OUSR",
+const OSOP = dbSim.define(
+  "OSOP",
   {
-    id_ousr: {
+    id_osop: {
       type: DataTypes.INTEGER,
       primaryKey: true,
     },
-    id_karyawan: {
+    document_date: {
+      type: DataTypes.DATE(6),
+      defaultValue: DataTypes.NOW,
+    },
+    id_ousr: {
       type: DataTypes.STRING,
     },
-    user_name: {
+    employee_id: {
       type: DataTypes.STRING,
     },
-    user_password: {
+    id_ocst: {
       type: DataTypes.STRING,
     },
-    refresh_token: {
-      type: DataTypes.TEXT,
+    remarks: {
+      type: DataTypes.STRING,
     },
-    id_ougr: {
-      type: DataTypes.INTEGER,
+    identifier: {
+      type: DataTypes.STRING,
+    },
+    is_active: {
+      type: DataTypes.STRING(1),
+      defaultValue: "1",
     },
   },
   {
@@ -32,23 +40,20 @@ const Users = db.define(
   }
 );
 
-const Usr1 = db.define(
-  "USR1",
+const SOP1 = dbSim.define(
+  "SOP1",
   {
-    id_usr1: {
+    id_sop1: {
       type: DataTypes.INTEGER,
       primaryKey: true,
     },
-    id_ousr: {
-      type: DataTypes.INTEGER,
-    },
-    device_type: {
+    id_osop: {
       type: DataTypes.STRING,
     },
-    device_uid: {
+    id_oitm: {
       type: DataTypes.STRING,
     },
-    is_local_network: {
+    identifier: {
       type: DataTypes.STRING,
     },
   },
@@ -58,4 +63,4 @@ const Usr1 = db.define(
   }
 );
 
-export { Users, Usr1 };
+export { OSOP, SOP1 };

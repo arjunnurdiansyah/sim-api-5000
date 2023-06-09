@@ -90,9 +90,9 @@ export const postingSalesVisit = async (req, res) => {
           AND is_active = '1'  
           AND id_ousr	= :id_ousr
           AND id_ocst = :id_ocst
-          AND type_check = 'CHECKIN'
-        GROUP BY 
-          identifier 
+          AND type_check = 'CHECKIN' 
+        GROUP BY
+          identifier
       ) chekin_date
       `,
       {

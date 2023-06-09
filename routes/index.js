@@ -10,6 +10,7 @@ import {
   LoginWithUUID,
   getSession,
   insertLog,
+  getDataUser,
 } from "../controllers/Users/UsersController.js";
 
 import {
@@ -158,6 +159,18 @@ import {
 
 import { insertDataActiveOutlet } from "../controllers/ActiveOutlet/ActiveOutletController.js";
 
+import {
+  getDataCustomerBonusItem,
+  getDataCustomerTarget,
+} from "../controllers/SalesVisit/CustomerInfoContoller.js";
+
+import {
+  insertHeaderOpportunity,
+  insertDetailOpportunity,
+  getDataOpportunityItem,
+  getDataDetailOpportunity,
+} from "../controllers/SalesVisit/OpportunityController.js";
+
 const router = express.Router();
 
 // AUTH
@@ -170,6 +183,7 @@ router.post("/token", accessToken);
 router.delete("/logout", Logout);
 router.get("/session", verifyToken, getSession);
 router.post("/user/log", insertLog);
+router.get("/user/data", getDataUser);
 
 // SALES - DASHBOARD
 // router.get("/sales/dashboard/national-sales", verifyToken, getNationSales);
@@ -218,18 +232,8 @@ router.post("/sales-visit/pay-receipt/header", insertHeaderPaymentReceipt);
 router.post("/sales-visit/pay-receipt/detail", insertDetailPaymentReceipt);
 router.get("/sales-visit/pay-receipt/header", getHeaderPaymentReceipt);
 router.get("/sales-visit/pay-receipt/detail", getDetailPaymentReceipt);
-
-// SALES VISIT
-router.get("/sales-visit/last-checkin", getDataLastCheckIn);
-router.get("/sales-visit/so-request/code", getDataRefNumberSORequest);
-router.post("/sales-visit/so-request/header", insertHeaderSORequest);
-router.post("/sales-visit/so-request/detail", insertDetailSORequest);
-router.post("/sales-visit/so-request/attachment", insertAttachmentSORequest);
-router.get("/sales-visit/so-request/item", getDataFGSORequest);
-router.get("/sales-visit/so-request/header", getHeaderSORequest);
-router.get("/sales-visit/so-request/detail", getDetailSORequest);
-router.get("/sales-visit/so-request/attachment", getAttachmentSORequest);
-router.post("/sales-visit/posting", postingSalesVisit);
+router.get("/sales-visit/customer-info", getDataCustomerBonusItem);
+router.get("/sales-visit/customer-info-target", getDataCustomerTarget);
 
 // PAYMENT RECEIPT
 router.get("/sales-visit/pay-receipt/piutang", getDataPiutangCustomer);
@@ -361,5 +365,11 @@ router.get("/prospective-visit/header", getDataProspectiveVisit);
 
 // ACTIVE OUTLER
 router.post("/active-outlet/header", insertDataActiveOutlet);
+
+// OPPORTUNITY
+router.post("/sales-visit/opportunity/header", insertHeaderOpportunity);
+router.post("/sales-visit/opportunity/detail", insertDetailOpportunity);
+router.get("/sales-visit/opportunity/item", getDataOpportunityItem);
+router.get("/sales-visit/opportunity/detail", getDataDetailOpportunity);
 
 export default router;

@@ -15,6 +15,18 @@ export const getUsers = async (req, res) => {
   }
 };
 
+export const getDataUser = async (req, res) => {
+  try {
+    const users = await Users.findOne({
+      attributes: ["id_ousr", "id_karyawan", "user_name", "id_ougr"],
+      where: { id_ousr: req.query.id_ousr },
+    });
+    res.json({ data: users });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const Login = async (req, res) => {
   try {
     const user = await Users.findAll({

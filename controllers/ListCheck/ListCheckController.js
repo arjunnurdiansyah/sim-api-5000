@@ -108,10 +108,14 @@ export const getDataCheck = async (req, res) => {
               T0.id_ousr,
               T0.id_ocst,
               UPPER(T0.remarks) AS customer_name_join_visit,
-              T0.is_offsite_meeting
+              T0.is_offsite_meeting,
+              T2.id_ougr,
+              T0.latitude,
+              T0.longitude
           FROM
             sim.OCEK T0 
             LEFT JOIN sim.OCST T1 ON T0.id_ocst = T1.id_ocst
+            LEFT JOIN sim.OUSR T2 ON T0.id_ousr = T2.id_ousr
           WHERE
             T0.document_date LIKE :document_date 
             AND T0.employee_id = :employee_id 
